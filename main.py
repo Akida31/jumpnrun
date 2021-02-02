@@ -4,6 +4,7 @@ import pygame
 
 RED = (255, 0, 0)
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -42,7 +43,6 @@ class Game:
         self.running = False
         pygame.quit()
         sys.exit()
-
 
 
 if __name__ == '__main__':
