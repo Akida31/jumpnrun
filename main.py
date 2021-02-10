@@ -1,6 +1,7 @@
 import sys
 
 import pygame
+from pytmx.util_pygame import load_pygame
 
 RED = (255, 0, 0)
 
@@ -16,6 +17,12 @@ class Player(pygame.sprite.Sprite):
     def draw(self, surface: pygame.Surface):
         pygame.draw.rect(surface, RED, (self.x, self.y, self.width, self.height))
 
+class Map:
+    def __init__(self):
+        pass
+
+    def draw(self, surface: pygame.Surface):
+        pass
 
 class Game:
     def __init__(self):
@@ -24,6 +31,7 @@ class Game:
         height: int = 300
         self.surface: pygame.Surface = pygame.display.set_mode((width, height))
         self.objects = [Player()]
+        self.map = Map()
         self.running = True
 
     def run(self):
@@ -37,6 +45,7 @@ class Game:
     def draw(self):
         for o in self.objects:
             o.draw(self.surface)
+        self.map(self.surface)
         pygame.display.update()
 
     def quit(self):
