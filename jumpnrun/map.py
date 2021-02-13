@@ -1,3 +1,4 @@
+from typing import Tuple
 from pygame import Surface
 from pytmx.util_pygame import load_pygame
 
@@ -8,7 +9,14 @@ class Map:
         :param path: the path of the tmx file to load from
         """
         self.tmx = load_pygame(path, pixelalpha=True)
-        self.size = self.tmx.width * self.tmx.tilewidth, self.tmx.height * self.tmx.tileheight
+        self.size: Tuple[int, int] = self.tmx.width * self.tmx.tilewidth, self.tmx.height * self.tmx.tileheight
+
+    def get_dimensions(self) -> Tuple[int, int]:
+        """
+        get the dimensions of the map
+        
+        """
+        return self.size
 
     def render(self, surface: Surface):
         """

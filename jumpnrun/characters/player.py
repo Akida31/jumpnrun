@@ -13,4 +13,13 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, surface: pygame.Surface):
         pygame.draw.rect(surface, RED, (self.x, self.y, self.width, self.height))
+    
 
+    def jump(self):
+        self.y -= 10
+        
+    def move_left(self):
+        self.x -= 10
+
+    def move_right(self):
+        self.x += 10
