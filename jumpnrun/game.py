@@ -10,7 +10,9 @@ class Game:
         self.width: int = 800
         self.height: int = 400
         self.surface: pygame.Surface = pygame.display.set_mode((self.width, self.height), flags=pygame.RESIZABLE)
-        self.player = Player()
+        # keys should also be holdable
+        pygame.key.set_repeat(250, 100)
+        self.player = Player("maps/characters.png")
         self.objects = []
         self.map = Map("maps/test.tmx")
         self.running = True
@@ -51,8 +53,10 @@ class Game:
         if key == pygame.KSCAN_ESCAPE:
             self.quit()
         elif key == pygame.K_w:
-            self.player.jump()
+            self.player.jump(self.map)
         elif key == pygame.K_a:
-            self.player.move_left()
+            self.player.move_left(self.map)
         elif key == pygame.K_d:
-            self.player.move_right()
+            self.player.move_right(self.map)
+        elif key == pygame.K_s:
+            self.player.move_down(self.map)
