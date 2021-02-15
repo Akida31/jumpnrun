@@ -18,6 +18,18 @@ class Map:
         """
         return self.size
 
+    def get_player_position(self) -> Tuple[int, int]:
+        """
+        get the initial position of the player
+
+        returns (x, y)
+        """
+        player = self.tmx.get_object_by_name("player")
+        x = player.x // self.tmx.tilewidth
+        y = player.y // self.tmx.tileheight
+        return (x, y)
+
+
     def render(self, surface: Surface):
         """
         render the map to the given surface

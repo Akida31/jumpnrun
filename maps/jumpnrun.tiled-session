@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "characters2.tsx",
+    "activeFile": "test.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -29,10 +29,10 @@
         },
         "test.tmx": {
             "scale": 2,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 236.5,
-                "y": 170.75
+                "x": 235.5,
+                "y": 169.75
             }
         }
     },
@@ -50,9 +50,9 @@
     "project": "jumpnrun.tiled-project",
     "recentFiles": [
         "sheet.tsx",
-        "test.tmx",
-        "swoosh.tsx",
         "characters2.tsx",
+        "swoosh.tsx",
+        "test.tmx",
         "characters.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
