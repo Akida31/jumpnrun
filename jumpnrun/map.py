@@ -47,6 +47,8 @@ class Map:
         """
         check if a field has a collision
         """
+        if x < 0 or y < 0 or x >= self.tmx.width or y >= self.tmx.height:
+            return True
         for layer in self.tmx.visible_tile_layers:
             properties = self.tmx.get_tile_properties(x, y, layer)
             if properties and "colliders" in properties:
