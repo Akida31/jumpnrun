@@ -1,6 +1,10 @@
 from typing import List, Optional, Tuple
 import pygame
 
+# Tilesize of the map
+TILESIZE: int = 16
+
+
 def load_spritesheet(filename: str, tile_width: int, 
         tile_height: Optional[int] = None, offset_x: int = 0,
         offset_y: int = 0, spacing_x: int = 0, spacing_y: int = 0,
@@ -20,10 +24,11 @@ def load_spritesheet(filename: str, tile_width: int,
     if tile_height is None:
         tile_height = tile_width
     image = pygame.image.load(filename).convert()
-    if alphacolor is None:
+    # TODO is this still necessary?
+    # if alphacolor is None:
         # determine the alphacolor from the pixel in the top left corner
-        alphacolor = image.get_at((0, 0))
-    image.set_colorkey(alphacolor)
+        # alphacolor = image.get_at((0, 0))
+    # image.set_colorkey(alphacolor)
     width, height = image.get_size()
     tiles_x = (width - offset_x + spacing_x) // (tile_width + spacing_x)
     tiles_y = (height - offset_y + spacing_y) // (tile_height + spacing_y)

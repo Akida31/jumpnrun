@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 from pygame import Surface
 from pytmx.util_pygame import load_pygame
 
@@ -29,6 +29,19 @@ class Map:
         y = player.y // self.tmx.tileheight
         return (x, y)
 
+    def get_stars_position(self) -> List[Tuple[int, int]]:
+        """
+        get the position of all stars
+
+        returns a List of (x, y)
+        """
+        loaded_stars = self.tmx.get_layer_by_name("Stars")
+        stars: List[Tuple[int, int]] = []
+        for star in loaded_stars:
+            x = star.x // self.tmx.tilewidth
+            y = star.y // self.tmx.tileheight
+            stars.append((x, y))
+        return stars
 
     def render(self, surface: Surface):
         """

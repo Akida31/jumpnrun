@@ -1,8 +1,11 @@
 import pygame
 import sys
+from os import listdir
+from typing import List, Tuple
 
 from .characters.player import Player
 from .map import Map
+from .objects.star import Star
 
 class Game:
     def __init__(self):
@@ -12,7 +15,7 @@ class Game:
         # initialize pygame
         pygame.init()
         # set the framerate of the game
-        self.FPS: int = 10
+        self.FPS: int = 60
         self.clock = pygame.time.Clock()
         # set the title of the window
         pygame.display.set_caption("Jumpnrun")
@@ -25,7 +28,17 @@ class Game:
         (player_x, player_y) = self.map.get_player_position()
         # create a new player
         self.player = Player("maps/characters2.png", player_x, player_y)
+
         self.objects = []
+        # load the position of the stars
+        stars: List[Tuple[int, int]] = self.map.get_stars_position()
+        # star files
+        star_dir: str = "maps/star/shine/"
+        starfiles: List[str] = list(map(lambda x: f"{star_dir}{x}", listdir(star_dir)))
+        for star in stars:
+            (x, y) = star
+            self.objects.append(Star(starfiles, x, y))
+
         self.running = True
 
     def run(self):

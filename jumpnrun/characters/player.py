@@ -1,9 +1,7 @@
 from typing import List
 import pygame
-from jumpnrun.utils import load_spritesheet
+from jumpnrun.utils import load_spritesheet, TILESIZE
 import time
-
-TILESIZE = 16
 
 
 class Player(pygame.sprite.Sprite):
@@ -23,7 +21,6 @@ class Player(pygame.sprite.Sprite):
 
     def render(self, surface: pygame.Surface):
         image = self.sprite
-        image.set_colorkey((255,255,255))
         surface.blit(image, (self.x, self.y, self.width, self.height))
     
 
@@ -50,10 +47,10 @@ class Player(pygame.sprite.Sprite):
             acc = self.move_down
         else:
             acc = self.move_up
-        for y in range(abs(y_acc)):
+        for y in range(abs(min(y_acc, 3))):
             acc(map, 1)
         # reset acceleration
-        self.acceleration = [0, 0]
+        self.acceleration = [0, y_acc-min(y_acc, 3)]
 
     def jump(self, map):
         if self._check_down(map):
@@ -63,17 +60,17 @@ class Player(pygame.sprite.Sprite):
         if not self._check_up(map):
             self.y -= dy
         
-    def move_left(self, map, dx=8):
+    def move_left(self, map, dx=2):
         if not (map.check_collide(self.x / TILESIZE - 0.5, self.y / TILESIZE) 
                 or  map.check_collide(self.x / TILESIZE - 0.5 , self.y / TILESIZE +1)):
             self.x -= dx
 
-    def move_right(self, map, dx=8):
+    def move_right(self, map, dx=2):
         if not (map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE) 
                 or  map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE +1)):
             self.x += dx
 
-    def move_down(self, map, dy=8):
+    def move_down(self, map, dy=2):
         if not self._check_down(map):
             self.y += dy
 
