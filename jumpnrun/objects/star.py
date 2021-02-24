@@ -17,6 +17,9 @@ class Star(pygame.sprite.Sprite):
             image.set_colorkey(image.get_at((0,0)))
             self.images.append(image)
 
+    @property
+    def rect(self) -> pygame.Rect:
+        return pygame.Rect(self.x, self.y, TILESIZE, TILESIZE)
 
     def render(self, surface: pygame.Surface):
         # the waiting time before the image gets changed
@@ -26,9 +29,9 @@ class Star(pygame.sprite.Sprite):
         self.iter_state += 1
         if self.iter_state == len(self.images) * WAITING_TIME:
             self.iter_state = 0
-        
+
         surface.blit(image, (self.x, self.y, TILESIZE, TILESIZE))
-       
+
     def apply_physics(self, *_):
         """
         stars dont have physics, so do nothing

@@ -48,6 +48,7 @@ class Game:
         while self.running:
             self.on_events()
             self.apply_physics()
+            self.player.interact(self.objects, self.quit)
             self.render()
             self.clock.tick(self.FPS)
         self.quit()
@@ -107,8 +108,8 @@ class Game:
         if keys[pygame.K_w]:
             self.player.jump(self.map)
         if keys[pygame.K_a]:
-            self.player.move_left(self.map)
+            self.player.go_left(self.map)
         if keys[pygame.K_d]:
-            self.player.move_right(self.map)
+            self.player.go_right(self.map)
         if keys[pygame.K_s]:
-            self.player.move_down(self.map)
+            raise NotImplementedError
