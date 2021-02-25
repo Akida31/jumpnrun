@@ -7,6 +7,8 @@ from .characters.player import Player
 from .map import Map
 from .objects.star import Star
 
+WHITE = (255, 255, 255)
+
 class Game:
     def __init__(self):
         """
@@ -19,10 +21,13 @@ class Game:
         self.clock = pygame.time.Clock()
         # set the title of the window
         pygame.display.set_caption("Jumpnrun")
-        self.width: int = 800
-        self.height: int = 400
+        self.width: int = 1200
+        self.height: int = 600
         # create the window
         self.surface: pygame.Surface = pygame.display.set_mode((self.width, self.height), flags=pygame.RESIZABLE)
+        # load the font
+        self.font = pygame.font.Font("assets/fonts/carobtn.TTF", 36)
+        # load the map
         self.map = Map("maps/test.tmx")
         # load player position
         (player_x, player_y) = self.map.get_player_position()
@@ -40,6 +45,10 @@ class Game:
             self.objects.append(Star(starfiles, x, y))
 
         self.running = True
+        # create a timer
+        self.timer = 0
+        # game is not paused initially
+        self.paused = False
 
     def run(self):
         """
@@ -47,8 +56,11 @@ class Game:
         """
         while self.running:
             self.on_events()
-            self.apply_physics()
-            self.player.interact(self.objects, self.quit)
+            if not self.paused:
+                # update the timer
+                self.timer += 1
+                self.apply_physics()
+                self.player.interact(self.objects, self.pause)
             self.render()
             self.clock.tick(self.FPS)
         self.quit()
@@ -74,12 +86,20 @@ class Game:
         map_width, map_height = self.map.get_dimensions()
         # create temporary surface for transforming
         surface = pygame.Surface((map_width, map_height))
+        # render the map
         self.map.render(surface)
+        # render all objects
         for o in self.objects:
             o.render(surface)
+        # render the player
         self.player.render(surface)
         # render the temporary surface to the full screen
         self.surface.blit(pygame.transform.scale(surface, (self.width, self.height)), (0, 0))
+        # render the timer
+        text = f"Time: {self.timer}"
+        timer = self.font.render(text, True, WHITE)
+        (text_width, text_height) = self.font.size(text)
+        self.surface.blit(timer, (10, 10, text_width, text_height))
         pygame.display.update()
 
     def apply_physics(self):
@@ -98,6 +118,20 @@ class Game:
         pygame.quit()
         sys.exit()
 
+    def pause(self):
+        """
+        pause the game
+        
+        the game will only be rendered and some events like closing the game will be handled
+        """
+        self.paused = True
+
+    def unpause(self):
+        """
+        unpause the game
+        """
+        self.paused = False
+
     def handle_keypresses(self, keys):
         """
         handle the keypresses of the user
@@ -105,11 +139,15 @@ class Game:
         # quit on escape
         if keys[pygame.K_ESCAPE]:
             self.quit()
-        if keys[pygame.K_w]:
-            self.player.jump(self.map)
-        if keys[pygame.K_a]:
-            self.player.go_left(self.map)
-        if keys[pygame.K_d]:
-            self.player.go_right(self.map)
         if keys[pygame.K_s]:
-            raise NotImplementedError
+            if self.paused:
+                self.unpause()
+            else:
+                self.pause()
+        if not self.paused:
+            if keys[pygame.K_w]:
+                self.player.jump(self.map)
+            if keys[pygame.K_a]:
+                self.player.go_left(self.map)
+            if keys[pygame.K_d]:
+                self.player.go_right(self.map)
