@@ -1,13 +1,10 @@
 import pygame
 import sys
-from os import listdir
-from typing import List, Tuple
+from typing import List, Optional
 
-from .characters.player import Player
-from .map import Map
-from .objects.star import Star
-
-WHITE = (255, 255, 255)
+from .level import Level
+from .screens.levelchooser import choose_level
+from .screens.endscreen import EndScreen
 
 class Game:
     def __init__(self):
@@ -16,138 +13,28 @@ class Game:
         """
         # initialize pygame
         pygame.init()
-        # set the framerate of the game
-        self.FPS: int = 60
-        self.clock = pygame.time.Clock()
         # set the title of the window
         pygame.display.set_caption("Jumpnrun")
         self.width: int = 1200
         self.height: int = 600
         # create the window
         self.surface: pygame.Surface = pygame.display.set_mode((self.width, self.height), flags=pygame.RESIZABLE)
-        # load the font
-        self.font = pygame.font.Font("assets/fonts/carobtn.TTF", 36)
-        # load the map
-        self.map = Map("maps/test.tmx")
-        # load player position
-        (player_x, player_y) = self.map.get_player_position()
-        # create a new player
-        self.player = Player("maps/characters2.png", player_x, player_y)
-
-        self.objects = []
-        # load the position of the stars
-        stars: List[Tuple[int, int]] = self.map.get_stars_position()
-        # star files
-        star_dir: str = "maps/star/shine/"
-        starfiles: List[str] = list(map(lambda x: f"{star_dir}{x}", listdir(star_dir)))
-        for star in stars:
-            (x, y) = star
-            self.objects.append(Star(starfiles, x, y))
-
-        self.running = True
-        # create a timer
-        self.timer = 0
-        # game is not paused initially
-        self.paused = False
-
-    def run(self):
-        """
-        gameloop, running the game
-        """
-        while self.running:
-            self.on_events()
-            if not self.paused:
-                # update the timer
-                self.timer += 1
-                self.apply_physics()
-                self.player.interact(self.objects, self.pause)
-            self.render()
-            self.clock.tick(self.FPS)
-        self.quit()
-
-    def on_events(self):
-        """
-        handle all events of the game
-        """
-        for event in pygame.event.get():
-            # close the program if the window should be closed
-            if event.type == pygame.QUIT:
-                self.quit()
-            # handle the resizing of the window
-            elif event.type == pygame.VIDEORESIZE:
-                self.width, self.height = event.size
-        # handle all keypresses
-        self.handle_keypresses(pygame.key.get_pressed())
-
-    def render(self):
-        """
-        render the window and all of its content
-        """
-        map_width, map_height = self.map.get_dimensions()
-        # create temporary surface for transforming
-        surface = pygame.Surface((map_width, map_height))
-        # render the map
-        self.map.render(surface)
-        # render all objects
-        for o in self.objects:
-            o.render(surface)
-        # render the player
-        self.player.render(surface)
-        # render the temporary surface to the full screen
-        self.surface.blit(pygame.transform.scale(surface, (self.width, self.height)), (0, 0))
-        # render the timer
-        text = f"Time: {self.timer}"
-        timer = self.font.render(text, True, WHITE)
-        (text_width, text_height) = self.font.size(text)
-        self.surface.blit(timer, (10, 10, text_width, text_height))
-        pygame.display.update()
-
-    def apply_physics(self):
-        """
-        apply physics to all objects
-        """
-        for o in self.objects:
-            o.apply_physics(self.map)
-        self.player.apply_physics(self.map)
+        # location of all levels
+        self.levels: List[str] = ["assets/maps/test.tmx"]
 
     def quit(self):
         """
-        stop the program and quit the game
+        quit the game
         """
-        self.running = False
         pygame.quit()
         sys.exit()
 
-    def pause(self):
+    def run(self):
         """
-        pause the game
-        
-        the game will only be rendered and some events like closing the game will be handled
+        run the game
         """
-        self.paused = True
+        levelnr = choose_level(self.surface, self.levels)
+        level = Level(self.levels[levelnr], self.surface)
+        time = level.run()
+        EndScreen(self.surface, levelnr, time)
 
-    def unpause(self):
-        """
-        unpause the game
-        """
-        self.paused = False
-
-    def handle_keypresses(self, keys):
-        """
-        handle the keypresses of the user
-        """
-        # quit on escape
-        if keys[pygame.K_ESCAPE]:
-            self.quit()
-        if keys[pygame.K_s]:
-            if self.paused:
-                self.unpause()
-            else:
-                self.pause()
-        if not self.paused:
-            if keys[pygame.K_w]:
-                self.player.jump(self.map)
-            if keys[pygame.K_a]:
-                self.player.go_left(self.map)
-            if keys[pygame.K_d]:
-                self.player.go_right(self.map)

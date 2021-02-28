@@ -31,9 +31,9 @@ class Player(pygame.sprite.Sprite):
             image = pygame.transform.flip(image, True, False)
         surface.blit(image, (self.x, self.y, self.width, self.height))
 
-    def interact(self, objects: List, quit_handler):
+    def interact(self, objects: List):
         if collision := pygame.sprite.spritecollideany(self, objects):
-            quit_handler() 
+            objects.remove(collision)
 
     def apply_physics(self, map):
         # gravity

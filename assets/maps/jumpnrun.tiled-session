@@ -1,0 +1,70 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "test.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "characters.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "characters2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "characters3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sheet.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 2,
+            "scaleInEditor": 4
+        },
+        "swoosh.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "test.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 235,
+                "y": 169.25
+            }
+        }
+    },
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "sheet.tsx",
+        "test.tmx",
+        "swoosh.tsx",
+        "characters2.tsx",
+        "characters3.tsx"
+    ],
+    "project": "jumpnrun.tiled-project",
+    "recentFiles": [
+        "characters2.tsx",
+        "sheet.tsx",
+        "characters3.tsx",
+        "swoosh.tsx",
+        "test.tmx",
+        "characters.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 16,
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 16
+    }
+}
