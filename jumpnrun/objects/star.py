@@ -2,6 +2,7 @@ from typing import List
 import pygame
 from jumpnrun.utils import TILESIZE
 
+
 class Star(pygame.sprite.Sprite):
     def __init__(self, sprite_filenames: List[str], x: int, y: int):
         # init the Sprite class
@@ -14,7 +15,7 @@ class Star(pygame.sprite.Sprite):
         for filename in sprite_filenames:
             image = pygame.image.load(filename)
             image = pygame.transform.scale(image, (TILESIZE, TILESIZE))
-            image.set_colorkey(image.get_at((0,0)))
+            image.set_colorkey(image.get_at((0, 0)))
             self.images.append(image)
 
     @property

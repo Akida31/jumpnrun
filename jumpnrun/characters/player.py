@@ -13,11 +13,13 @@ class Player(pygame.sprite.Sprite):
         self.y: int = y * TILESIZE
         self.width = 16
         self.height = 24
-        self.spritesheet = load_spritesheet(sprite_filename, self.width, self.height, 8, 8, 16, 8)
+        self.spritesheet = load_spritesheet(
+            sprite_filename, self.width, self.height, 8, 8, 16, 8
+        )
         self.sprite = self.spritesheet[8][2]
         # for applying gravity we need to save velocity and acceleration of the player
-        self.acceleration: List[float] = [0,0]
-        self.velocity: List[float] = [0,0]
+        self.acceleration: List[float] = [0, 0]
+        self.velocity: List[float] = [0, 0]
         self.flip = False  # the direction of the sprite image
 
     @property
@@ -111,17 +113,21 @@ class Player(pygame.sprite.Sprite):
             self.x += dx
 
     def _check_right(self, map):
-        return (map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE)
-                or  map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE +1))
+        return map.check_collide(
+            self.x / TILESIZE + 1, self.y / TILESIZE
+        ) or map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE + 1)
 
     def _check_left(self, map):
-        return (map.check_collide(self.x / TILESIZE - 0.5, self.y / TILESIZE)
-                or  map.check_collide(self.x / TILESIZE - 0.5 , self.y / TILESIZE +1))
+        return map.check_collide(
+            self.x / TILESIZE - 0.5, self.y / TILESIZE
+        ) or map.check_collide(self.x / TILESIZE - 0.5, self.y / TILESIZE + 1)
 
     def _check_down(self, map):
-        return (map.check_collide(self.x / TILESIZE + 0.5, self.y / TILESIZE + 1.5)
-                or map.check_collide(self.x / TILESIZE, self.y / TILESIZE + 1.5))
+        return map.check_collide(
+            self.x / TILESIZE + 0.5, self.y / TILESIZE + 1.5
+        ) or map.check_collide(self.x / TILESIZE, self.y / TILESIZE + 1.5)
 
     def _check_up(self, map):
-        return (map.check_collide(self.x / TILESIZE + 0.75, self.y / TILESIZE)
-                or map.check_collide(self.x / TILESIZE, self.y / TILESIZE))
+        return map.check_collide(
+            self.x / TILESIZE + 0.75, self.y / TILESIZE
+        ) or map.check_collide(self.x / TILESIZE, self.y / TILESIZE)

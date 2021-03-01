@@ -36,7 +36,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 235,
-                "y": 169.25
+                "y": 169.5
             }
         }
     },
@@ -48,17 +48,15 @@
     "openFiles": [
         "sheet.tsx",
         "test.tmx",
-        "swoosh.tsx",
-        "characters2.tsx",
-        "characters3.tsx"
+        "swoosh.tsx"
     ],
     "project": "jumpnrun.tiled-project",
     "recentFiles": [
-        "characters2.tsx",
         "sheet.tsx",
-        "characters3.tsx",
         "swoosh.tsx",
         "test.tmx",
+        "characters2.tsx",
+        "characters3.tsx",
         "characters.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

@@ -9,6 +9,7 @@ from .objects.star import Star
 
 WHITE = (255, 255, 255)
 
+
 class Level:
     def __init__(self, level_file: str, surface: pygame.Surface):
         """
@@ -21,10 +22,10 @@ class Level:
         self.surface = surface
         # save the dimensions of the surface
         (self.width, self.height) = self.surface.get_size()
-        
+
         # load the font and change the size depending on the window size
         self.font_file: str = "assets/fonts/carobtn.TTF"
-        self.font = pygame.font.Font(self.font_file, round(0.06*self.height))
+        self.font = pygame.font.Font(self.font_file, round(0.06 * self.height))
         # set the framerate of the game
         self.FPS: int = 60
         self.clock = pygame.time.Clock()
@@ -54,7 +55,7 @@ class Level:
     def run(self) -> Optional[int]:
         """
         gameloop, running the game
-        
+
         returns the time until completion or None if the Level wasn't completed
         """
         while self.running:
@@ -88,11 +89,11 @@ class Level:
     def resize(self, size: Tuple[int, int]):
         """
         resize the window and all content
-        
+
         size: (width, height)
         """
         self.width, self.height = size
-        self.font = pygame.font.Font(self.font_file, round(0.06*self.height))
+        self.font = pygame.font.Font(self.font_file, round(0.06 * self.height))
 
     def render(self):
         """
@@ -109,7 +110,9 @@ class Level:
         # render the player
         self.player.render(surface)
         # render the temporary surface to the full screen
-        self.surface.blit(pygame.transform.scale(surface, (self.width, self.height)), (0, 0))
+        self.surface.blit(
+            pygame.transform.scale(surface, (self.width, self.height)), (0, 0)
+        )
         # render the timer
         text = f"Time: {self.timer}"
         timer = self.font.render(text, True, WHITE)
@@ -136,7 +139,7 @@ class Level:
     def pause(self):
         """
         pause the game
-        
+
         the game will only be rendered and some events like closing the game will be handled
         """
         self.paused = True

@@ -2,6 +2,7 @@ from typing import Tuple, List
 from pygame import Surface
 from pytmx.util_pygame import load_pygame
 
+
 class Map:
     def __init__(self, path: str):
         """
@@ -9,12 +10,15 @@ class Map:
         :param path: the path of the tmx file to load from
         """
         self.tmx = load_pygame(path, pixelalpha=True)
-        self.size: Tuple[int, int] = self.tmx.width * self.tmx.tilewidth, self.tmx.height * self.tmx.tileheight
+        self.size: Tuple[int, int] = (
+            self.tmx.width * self.tmx.tilewidth,
+            self.tmx.height * self.tmx.tileheight,
+        )
 
     def get_dimensions(self) -> Tuple[int, int]:
         """
         get the dimensions of the map
-        
+
         """
         return self.size
 
@@ -54,7 +58,6 @@ class Map:
             layer = self.tmx.layers[layer]
             for x, y, image in layer.tiles():
                 surface.blit(image, (x * self.tmx.tilewidth, y * self.tmx.tileheight))
-
 
     def check_collide(self, x: int, y: int) -> bool:
         """
