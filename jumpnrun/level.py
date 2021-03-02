@@ -1,11 +1,12 @@
-import pygame
 import sys
 from os import listdir
 from typing import List, Tuple, Optional
 
-from .characters.player import Player
-from .map import Map
-from .objects.star import Star
+import pygame
+
+from jumpnrun.characters.player import Player
+from jumpnrun.map import Map
+from jumpnrun.objects.star import Star
 
 WHITE = (255, 255, 255)
 
@@ -41,7 +42,7 @@ class Level:
         stars: List[Tuple[int, int]] = self.map.get_stars_position()
         # star files
         star_dir: str = "assets/img/star/shine/"
-        starfiles: List[str] = list(map(lambda x: f"{star_dir}{x}", listdir(star_dir)))
+        starfiles: List[str] = list(map(lambda i: f"{star_dir}{i}", listdir(star_dir)))
         for star in stars:
             (x, y) = star
             self.objects.append(Star(starfiles, x, y))
@@ -64,7 +65,7 @@ class Level:
                 # update the timer
                 self.timer += 1
                 self.apply_physics()
-                status = self.player.interact(self.objects)
+                self.player.interact(self.objects)
                 # if the player hit all stars end the level
                 if len(self.objects) == 0:
                     return self.timer
@@ -99,7 +100,7 @@ class Level:
         """
         render the window and all of its content
         """
-        map_width, map_height = self.map.get_dimensions()
+        map_width, map_height = self.map.get_size()
         # create temporary surface for transforming
         surface = pygame.Surface((map_width, map_height))
         # render the map

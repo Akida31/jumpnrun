@@ -1,14 +1,13 @@
+from typing import List
+
 import pygame
-import sys
-from typing import List, Optional
 
-from .level import Level
-from .utils import Button
-
+from jumpnrun.level import Level
+from jumpnrun.utils import Button, quit_game
 
 WHITE = pygame.Color(255, 255, 255)
-BLACK = pygame.Color(0, 0, 0)
-BLACK2 = pygame.Color(15, 15, 15)
+BLACK = pygame.Color(40, 42, 54)
+BLACK2 = pygame.Color(68, 71, 90)
 
 
 class Game:
@@ -29,13 +28,6 @@ class Game:
         # location of all levels
         self.levels: List[str] = ["assets/maps/test.tmx"]
 
-    def quit(self):
-        """
-        quit the game
-        """
-        pygame.quit()
-        sys.exit()
-
     def run(self):
         """
         run the game
@@ -48,9 +40,9 @@ class Game:
         """
         start_btn = Button(
             caption="Start",
-            x=0.4,
+            x=0.45,
             y=0.45,
-            width=0.2,
+            width=0.1,
             height=0.1,
             textsize=36,
             font_file="assets/fonts/carobtn.TTF",
@@ -64,7 +56,7 @@ class Game:
             for event in pygame.event.get():
                 # close the program if the window should be closed
                 if event.type == pygame.QUIT:
-                    self.quit()
+                    quit_game()
                 # handle click
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if start_btn.check_on(self.surface):
@@ -80,4 +72,4 @@ class Game:
         # TODO give the player an option to choose the level
         level = 0
         level = Level(self.levels[level], self.surface)
-        time = level.run()
+        _time = level.run()

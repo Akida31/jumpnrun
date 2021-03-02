@@ -1,8 +1,17 @@
 from typing import List, Optional, Tuple
 import pygame
+import sys
 
 # Tilesize of the map
 TILESIZE: int = 16
+
+
+def quit_game():
+    """
+    quit the game
+    """
+    pygame.quit()
+    sys.exit()
 
 
 def load_spritesheet(
@@ -90,23 +99,23 @@ class Button:
         """
         self.font = pygame.font.Font(self.font_file, self.textsize)
 
-    def render(self, surface: pygame.Surface):
+    def render(self, out_surface: pygame.Surface):
         """
         render the button on the given surface
         """
-        x = round(self.x * surface.get_width())
-        y = round(self.y * surface.get_height())
-        width = round(self.width * surface.get_width())
-        height = round(self.height * surface.get_height())
-        self.surface = pygame.Surface((width, height))
-        if self.check_on(surface):
-            self.surface.fill(self.hover_color)
+        x = round(self.x * out_surface.get_width())
+        y = round(self.y * out_surface.get_height())
+        width = round(self.width * out_surface.get_width())
+        height = round(self.height * out_surface.get_height())
+        surface = pygame.Surface((width, height))
+        if self.check_on(out_surface):
+            surface.fill(self.hover_color)
         else:
-            self.surface.fill(self.bg_color)
+            surface.fill(self.bg_color)
         font = self.font.render(self.caption, True, self.color)
         (font_width, font_height) = self.font.size(self.caption)
-        self.surface.blit(font, (10, 10, font_width, font_height))
-        surface.blit(self.surface, (x, y))
+        surface.blit(font, (10, 10, font_width, font_height))
+        out_surface.blit(surface, (x, y))
 
     def check_on(self, surface: pygame.Surface) -> bool:
         """
