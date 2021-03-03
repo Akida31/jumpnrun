@@ -1,9 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 import pygame
 
 from jumpnrun.level import Level
-from jumpnrun.utils import Button, quit_game
+from jumpnrun.utils import quit_game
+from jumpnrun.widgets import Button
 
 WHITE = pygame.Color(255, 255, 255)
 BLACK = pygame.Color(40, 42, 54)
@@ -38,6 +39,7 @@ class Game:
         """
         the screen on the beginning of the game
         """
+        # TODO headline
         start_btn = Button(
             caption="Start",
             x=0.45,
@@ -89,12 +91,13 @@ class Game:
         """
         give the player the ability to choose a level
         """
+        # TODO headline
         level_buttons: List[Button] = []
         for i, level in enumerate(self.levels):
             button = Button(
-                caption=f"Level {i+1}",
-                x=(i%5) * 0.15 + 0.125,
-                y=(i//5) * 0.15 + 0.2,
+                caption=f"Level {i + 1}",
+                x=(i % 5) * 0.15 + 0.125,
+                y=(i // 5) * 0.15 + 0.2,
                 width=0.1,
                 height=0.1,
                 textsize=0.3,
@@ -128,9 +131,10 @@ class Game:
                     for i, button in enumerate(level_buttons):
                         # start the clicked level
                         if button.check_on(self.surface):
-                            level = i
-                            level = Level(self.levels[level], self.surface)
-                            _time = level.run()
+                            level = Level(self.levels[i], self.surface)
+                            time = level.run()
+                            self.endscreen(i, time)
+                            return
                     # handle click of back button
                     if back_button.check_on(self.surface):
                         return
@@ -146,3 +150,64 @@ class Game:
             # update the screen
             pygame.display.update()
 
+    def endscreen(self, previous_level: int, time: Optional[int]):
+        """
+        the screen after a level ended
+
+        previous_level: the number of the completed level
+        time: the time in which the level is completed
+        """
+        # TODO show time
+        print(f"completed Level {previous_level} in {time}")
+        next_button = Button(
+            caption="Next",
+            x=0.45,
+            y=0.45,
+            width=0.1,
+            height=0.1,
+            textsize=0.36,
+            font_file="assets/fonts/carobtn.TTF",
+            color=WHITE,
+            bg_color=BLACK,
+            hover_color=BLACK2
+        )
+        back_button = Button(
+            caption="Back",
+            x=0.45,
+            y=0.6,
+            width=0.1,
+            height=0.1,
+            textsize=0.36,
+            font_file="assets/fonts/carobtn.TTF",
+            color=WHITE,
+            bg_color=BLACK,
+            hover_color=BLACK2
+        )
+        image = pygame.image.load("assets/img/screenshot.png")
+        while True:
+            for event in pygame.event.get():
+                # close the program if the window should be closed
+                if event.type == pygame.QUIT:
+                    quit_game()
+                # handle click
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # handle click of back button
+                    if back_button.check_on(self.surface):
+                        return
+                    # handle click of next button
+                    if next_button.check_on(self.surface):
+                        level = Level(self.levels[previous_level + 1], self.surface)
+                        time = level.run()
+                        self.endscreen(previous_level + 1, time)
+                        return
+            # render the background image
+            width = self.surface.get_width()
+            height = self.surface.get_height()
+            self.surface.blit(pygame.transform.scale(image, (width, height)), (0, 0))
+            # render the back button
+            back_button.render(self.surface)
+            # render the next button it there is a next level
+            if previous_level < len(self.levels) - 1:
+                next_button.render(self.surface)
+            # update the screen
+            pygame.display.update()

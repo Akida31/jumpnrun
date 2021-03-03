@@ -7,8 +7,9 @@ import pygame
 from jumpnrun.characters.player import Player
 from jumpnrun.map import Map
 from jumpnrun.objects.star import Star
+from jumpnrun.widgets import Label, XAlign
 
-WHITE = (255, 255, 255)
+WHITE = pygame.Color(255, 255, 255)
 
 
 class Level:
@@ -24,9 +25,19 @@ class Level:
         # save the dimensions of the surface
         (self.width, self.height) = self.surface.get_size()
 
-        # load the font and change the size depending on the window size
-        self.font_file: str = "assets/fonts/carobtn.TTF"
-        self.font = pygame.font.Font(self.font_file, round(0.06 * self.height))
+        # create a label for the timer
+        self.time_label = Label(
+            caption="Time",
+            x=0.01,
+            y=0.01,
+            width=0.25,
+            height=0.1,
+            font_file="assets/fonts/carobtn.TTF",
+            textsize=0.15,
+            color=WHITE,
+            xalign=XAlign.LEFT
+        )
+
         # set the framerate of the game
         self.FPS: int = 60
         self.clock = pygame.time.Clock()
@@ -94,7 +105,6 @@ class Level:
         size: (width, height)
         """
         self.width, self.height = size
-        self.font = pygame.font.Font(self.font_file, round(0.06 * self.height))
 
     def render(self):
         """
@@ -115,10 +125,8 @@ class Level:
             pygame.transform.scale(surface, (self.width, self.height)), (0, 0)
         )
         # render the timer
-        text = f"Time: {self.timer}"
-        timer = self.font.render(text, True, WHITE)
-        (text_width, text_height) = self.font.size(text)
-        self.surface.blit(timer, (10, 10, text_width, text_height))
+        self.time_label.set_caption(f"Time: {self.timer}")
+        self.time_label.render(self.surface)
         pygame.display.update()
 
     def apply_physics(self):
