@@ -3,12 +3,29 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "test.tmx",
+    "activeFile": "0.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
             "scaleInDock": 1
+        },
+        "0.tmx": {
+            "scale": 2.0662499999999997,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.04839685420453,
+                "y": 120.02419842710225
+            }
+        },
+        "1.tmx": {
+            "scale": 2.0662499999999997,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.04839685420453,
+                "y": 120.02419842710225
+            }
         },
         "characters.tsx": {
             "scaleInDock": 1,
@@ -46,15 +63,16 @@
     "map.tileWidth": 16,
     "map.width": 40,
     "openFiles": [
-        "sheet.tsx",
-        "test.tmx",
-        "swoosh.tsx"
+        "0.tmx",
+        "1.tmx"
     ],
     "project": "jumpnrun.tiled-project",
     "recentFiles": [
-        "sheet.tsx",
-        "swoosh.tsx",
+        "1.tmx",
+        "0.tmx",
         "test.tmx",
+        "swoosh.tsx",
+        "sheet.tsx",
         "characters2.tsx",
         "characters3.tsx",
         "characters.tsx"

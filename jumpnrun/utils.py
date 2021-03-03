@@ -71,7 +71,7 @@ class Button:
         y: float,
         width: float,
         height: float,
-        textsize: int,
+        textsize: float,
         font_file: str,
         color: pygame.Color,
         bg_color: pygame.Color,
@@ -91,39 +91,49 @@ class Button:
         else:
             # TODO generate hover color manually
             self.hover_color = bg_color
-        self.load_font()
 
-    def load_font(self):
+    def rect(self, surface: pygame.Surface) -> Tuple[int, int, int, int]:
         """
-        load the font from the given file and textsize
+        determine the position and size of the button
+
+        returns (x, y, width, height)
         """
-        self.font = pygame.font.Font(self.font_file, self.textsize)
+        x = round(self.x * surface.get_width())
+        y = round(self.y * surface.get_height())
+        width = round(self.width * surface.get_width())
+        height = round(self.height * surface.get_height())
+        return x, y, width, height
+
 
     def render(self, out_surface: pygame.Surface):
         """
         render the button on the given surface
         """
-        x = round(self.x * out_surface.get_width())
-        y = round(self.y * out_surface.get_height())
-        width = round(self.width * out_surface.get_width())
-        height = round(self.height * out_surface.get_height())
+        x, y, width, height = self.rect(out_surface)
+        # create a temporary surface
         surface = pygame.Surface((width, height))
+        # change background color on hover
         if self.check_on(out_surface):
             surface.fill(self.hover_color)
         else:
             surface.fill(self.bg_color)
-        font = self.font.render(self.caption, True, self.color)
-        (font_width, font_height) = self.font.size(self.caption)
-        surface.blit(font, (10, 10, font_width, font_height))
+        # load the font and change it size with the window size
+        font = pygame.font.Font(self.font_file, int(self.textsize * width))
+        # create the text from the font with the given caption and color
+        text = font.render(self.caption, True, self.color)
+        # determine the size of the rendered text
+        (font_width, font_height) = font.size(self.caption)
+        # render the font in the center of the surface
+        font_x: int = (width - font_width) // 2
+        font_y: int = (height - font_height) // 2
+        surface.blit(text, (font_x, font_y, font_width, font_height))
+        # blit the temporary surface
         out_surface.blit(surface, (x, y))
 
     def check_on(self, surface: pygame.Surface) -> bool:
         """
         check if the mouse is over the button
         """
-        x, y = pygame.mouse.get_pos()
-        x_pos = round(self.x * surface.get_width())
-        y_pos = round(self.y * surface.get_height())
-        width = round(self.width * surface.get_width())
-        height = round(self.height * surface.get_height())
-        return (x_pos <= x <= x_pos + width) and (y_pos <= y <= y_pos + height)
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        x, y, width, height = self.rect(surface)
+        return (x <= mouse_x <= x + width) and (y <= mouse_y <= y + height)
