@@ -6,8 +6,6 @@ from jumpnrun.level import Level
 from jumpnrun.utils import quit_game
 from jumpnrun.widgets import Button
 
-WHITE = pygame.Color(255, 255, 255)
-BLACK = pygame.Color(40, 42, 54)
 BLACK2 = pygame.Color(68, 71, 90)
 
 
@@ -27,7 +25,7 @@ class Game:
             (self.width, self.height), flags=pygame.RESIZABLE
         )
         # location of all levels
-        self.levels: List[str] = ["assets/maps/0.tmx", "assets/maps/1.tmx"]
+        self.levels: List[str] = ["assets/maps/0.tmx", "assets/maps/1.tmx", "assets/maps/test.tmx"]
 
     def run(self):
         """
@@ -44,24 +42,12 @@ class Game:
             caption="Start",
             x=0.45,
             y=0.45,
-            width=0.1,
-            height=0.1,
-            textsize=0.35,
-            font_file="assets/fonts/carobtn.TTF",
-            color=WHITE,
-            bg_color=BLACK,
             hover_color=BLACK2,
         )
         quit_btn = Button(
             caption="Quit",
             x=0.45,
             y=0.6,
-            width=0.1,
-            height=0.1,
-            textsize=0.35,
-            font_file="assets/fonts/carobtn.TTF",
-            color=WHITE,
-            bg_color=BLACK,
             hover_color=BLACK2,
         )
         image = pygame.image.load("assets/img/screenshot.png")
@@ -98,12 +84,7 @@ class Game:
                 caption=f"Level {i + 1}",
                 x=(i % 5) * 0.15 + 0.125,
                 y=(i // 5) * 0.15 + 0.2,
-                width=0.1,
-                height=0.1,
                 textsize=0.3,
-                font_file="assets/fonts/carobtn.TTF",
-                color=WHITE,
-                bg_color=BLACK,
                 hover_color=BLACK2
             )
             level_buttons.append(button)
@@ -111,12 +92,6 @@ class Game:
             caption="Back",
             x=0.45,
             y=0.7,
-            width=0.1,
-            height=0.1,
-            textsize=0.36,
-            font_file="assets/fonts/carobtn.TTF",
-            color=WHITE,
-            bg_color=BLACK,
             hover_color=BLACK2
         )
         image = pygame.image.load("assets/img/screenshot.png")
@@ -133,7 +108,9 @@ class Game:
                         if button.check_on(self.surface):
                             level = Level(self.levels[i], self.surface)
                             time = level.run()
-                            self.endscreen(i, time)
+                            # show endscreen only if the level was completed
+                            if time:
+                                self.endscreen(i, time)
                             return
                     # handle click of back button
                     if back_button.check_on(self.surface):
@@ -163,24 +140,12 @@ class Game:
             caption="Next",
             x=0.45,
             y=0.45,
-            width=0.1,
-            height=0.1,
-            textsize=0.36,
-            font_file="assets/fonts/carobtn.TTF",
-            color=WHITE,
-            bg_color=BLACK,
             hover_color=BLACK2
         )
         back_button = Button(
             caption="Back",
             x=0.45,
             y=0.6,
-            width=0.1,
-            height=0.1,
-            textsize=0.36,
-            font_file="assets/fonts/carobtn.TTF",
-            color=WHITE,
-            bg_color=BLACK,
             hover_color=BLACK2
         )
         image = pygame.image.load("assets/img/screenshot.png")
@@ -198,7 +163,9 @@ class Game:
                     if next_button.check_on(self.surface):
                         level = Level(self.levels[previous_level + 1], self.surface)
                         time = level.run()
-                        self.endscreen(previous_level + 1, time)
+                        # show endscreen only if the level was completed
+                        if time:
+                            self.endscreen(previous_level + 1, time)
                         return
             # render the background image
             width = self.surface.get_width()

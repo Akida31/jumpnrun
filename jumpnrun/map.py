@@ -1,7 +1,11 @@
+from os import listdir
 from typing import Tuple, List
 
 from pygame import Surface
 from pytmx.util_pygame import load_pygame
+
+from jumpnrun.objects.sign import Sign
+from jumpnrun.objects.star import Star
 
 
 class Map:
@@ -39,23 +43,43 @@ class Map:
         y: int = player.y // self.tmx.tileheight
         return x, y
 
-    def get_stars_position(self) -> List[Tuple[int, int]]:
+    def get_stars(self) -> List[Star]:
         """
-        get the position of all stars
-
-        returns a List of (x, y)
+        get all stars
         """
+        # load the imgs for the stars
+        star_dir: str = "assets/img/star/shine/"
+        starfiles: List[str] = list(map(lambda i: f"{star_dir}{i}", listdir(star_dir)))
         # load the star layer
-        loaded_stars = self.tmx.get_layer_by_name("Stars")
+        layer = self.tmx.get_layer_by_name("Stars")
         # create an empty list for all stars
         # every star is just a tuple of x and y position
-        stars: List[Tuple[int, int]] = []
+        stars: List[Star] = []
         # calculate the tileposition of the stars
-        for star in loaded_stars:
+        for star in layer:
             x = star.x // self.tmx.tilewidth
             y = star.y // self.tmx.tileheight
-            stars.append((x, y))
+            stars.append(Star(starfiles, x, y))
         return stars
+
+    def get_signs(self) -> List[Sign]:
+        """
+        get all signs
+
+        returns a Dictionary in which the description is mapped
+        to the position (x,y)
+        """
+        # load the sign layer
+        layer = self.tmx.get_layer_by_name("Signs")
+        signs: List[Sign] = []
+        for sign in layer:
+            x = sign.x // self.tmx.tilewidth
+            y = sign.y // self.tmx.tilewidth
+            description: str = sign.properties["description"]
+            # pytmx fails to load normal \n
+            description = description.replace("|n", "\n")
+            signs.append(Sign(x, y, description, sign.image))
+        return signs
 
     def render(self, surface: Surface):
         """

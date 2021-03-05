@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 import pygame
 
@@ -48,14 +48,13 @@ class Player(pygame.sprite.Sprite):
             image = pygame.transform.flip(image, True, False)
         surface.blit(image, self.rect)
 
-    def interact(self, objects: List):
+    def interact(self, objects: Dict[str, List]):
         """
         interact with the objects
-
-        currently removes all objects on collision
         """
-        if collision := pygame.sprite.spritecollideany(self, objects):
-            objects.remove(collision)
+        # check collision with stars
+        if collision := pygame.sprite.spritecollideany(self, objects["stars"]):
+            objects["stars"].remove(collision)
 
     def apply_physics(self, map: Map):
         """
@@ -119,19 +118,19 @@ class Player(pygame.sprite.Sprite):
         if self._check_down(map):
             self.acceleration[1] -= 9
 
-    def go_left(self, map: Map):
+    def go_left(self, _map: Map):
         """
         the player goes left
         """
         self.acceleration[0] = -2
 
-    def go_right(self, map: Map):
+    def go_right(self, _map: Map):
         """
         the player goes right
         """
         self.acceleration[0] = 2
 
-    def move_up(self, map: Map, dy: int):
+    def move_up(self, map: Map, dy: float):
         """
         move the player directly up if nothing is in his way
 
@@ -140,7 +139,7 @@ class Player(pygame.sprite.Sprite):
         if not self._check_up(map):
             self.y -= dy
 
-    def move_down(self, map: Map, dy: int):
+    def move_down(self, map: Map, dy: float):
         """
         move the player directly down if nothing is in his way
 
@@ -149,7 +148,7 @@ class Player(pygame.sprite.Sprite):
         if not self._check_down(map):
             self.y += dy
 
-    def move_left(self, map: Map, dx: int):
+    def move_left(self, map: Map, dx: float):
         """
         move the player directly left if nothing is in his way
 
@@ -158,7 +157,7 @@ class Player(pygame.sprite.Sprite):
         if not self._check_left(map):
             self.x -= dx
 
-    def move_right(self, map: Map, dx: int):
+    def move_right(self, map: Map, dx: float):
         """
         move the player directly right if nothing is in his way
 

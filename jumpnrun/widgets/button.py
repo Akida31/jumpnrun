@@ -3,6 +3,9 @@ from typing import Optional
 import pygame
 from jumpnrun.widgets import Label, XAlign, YAlign
 
+WHITE = pygame.Color(255, 255, 255)
+BLACK = pygame.Color(40, 42, 54)
+
 
 class Button:
     """
@@ -16,12 +19,12 @@ class Button:
             caption: str,
             x: float,
             y: float,
-            width: float,
-            height: float,
-            textsize: float,
-            font_file: str,
-            color: pygame.Color,
-            bg_color: pygame.Color,
+            width: float = 0.1,
+            height: float = 0.1,
+            textsize: float = 0.36,
+            font_file: str = "assets/fonts/carobtn.TTF",
+            color: pygame.Color = WHITE,
+            bg_color: pygame.Color = BLACK,
             hover_color: Optional[pygame.Color] = None,
             xalign: XAlign = XAlign.CENTER,
             yalign: YAlign = YAlign.CENTER
