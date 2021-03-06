@@ -1,6 +1,6 @@
-import sys
+from enum import Enum
 from time import sleep
-from typing import List, Tuple, Optional, Dict
+from typing import Dict, List, Tuple
 
 import pygame
 
@@ -8,11 +8,20 @@ from jumpnrun.characters.player import Player
 from jumpnrun.map import Map
 from jumpnrun.objects.sign import Sign
 from jumpnrun.objects.star import Star
+from jumpnrun.translate import t
 from jumpnrun.utils import quit_game
-from jumpnrun.widgets import Label, XAlign, Button, YAlign
+from jumpnrun.widgets import Button, Label, XAlign, YAlign
 
 WHITE = pygame.Color(255, 255, 255)
 BLACK2 = pygame.Color(68, 71, 90)
+
+
+class LevelStatus(Enum):
+    Paused = 0,
+    Running = 1,
+    Finished = 2,
+    Quit = 3,
+    Restart = 4
 
 
 class Level:
@@ -30,7 +39,7 @@ class Level:
 
         # create a label for the timer
         self.time_label = Label(
-            caption="Time",
+            caption=t("Time"),
             x=0.01,
             y=0.01,
             width=0.25,
@@ -72,17 +81,17 @@ class Level:
         # load all signs
         signs: List[Sign] = self.map.get_signs()
         self.objects["signs"] = signs
-        self.running = True
+        self.status = LevelStatus.Running
         # create a timer
         self.timer = 0
 
-    def run(self) -> Optional[int]:
+    def run(self) -> Tuple[LevelStatus, int]:
         """
         gameloop, running the game
 
-        returns the time until completion or None if the Level wasn't completed
+        returns the status of the end and the time which the game ran
         """
-        while self.running:
+        while self.status == LevelStatus.Running:
             self.on_events()
             # update the timer
             self.timer += 1
@@ -90,10 +99,10 @@ class Level:
             self.player.interact(self.objects)
             # if the player hit all stars end the level
             if len(self.objects["stars"]) == 0:
-                return self.timer
+                self.status = LevelStatus.Finished
             self.render()
             self.clock.tick(self.FPS)
-        return None
+        return (self.status, self.timer)
 
     def on_events(self):
         """
@@ -102,7 +111,7 @@ class Level:
         for event in pygame.event.get():
             # close the program if the window should be closed
             if event.type == pygame.QUIT:
-                self.quit()
+                quit_game()
             # handle the resizing of the window
             elif event.type == pygame.VIDEORESIZE:
                 self.resize(event.size)
@@ -138,11 +147,11 @@ class Level:
         )
         # render the description of a sign if a player stands on one
         if collision := pygame.sprite.spritecollideany(self.player, self.objects["signs"]):
-            self.sign_label.set_caption(collision.description)
+            self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)
 
         # render the timer
-        self.time_label.set_caption(f"Time: {self.timer}")
+        self.time_label.set_caption(f"{t('Time')}: {self.timer}")
         self.time_label.render(self.surface)
         pygame.display.update()
 
@@ -155,26 +164,15 @@ class Level:
                 element.apply_physics(self.map)
         self.player.apply_physics(self.map)
 
-    def quit(self):
-        """
-        stop the program and quit the game
-        """
-        self.running = False
-        pygame.quit()
-        sys.exit()
-
     def handle_keypresses(self, keys):
         """
         handle the keypresses of the user
         """
         # quit on escape
         if keys[pygame.K_q]:
-            self.quit()
+            quit_game()
         if keys[pygame.K_ESCAPE]:
-            if not self.pause_screen():
-                self.running = False
-                return
-            sleep(0.5)
+            self.pause_screen()
         if keys[pygame.K_w]:
             self.player.jump(self.map)
         if keys[pygame.K_a]:
@@ -182,26 +180,36 @@ class Level:
         if keys[pygame.K_d]:
             self.player.go_right(self.map)
 
-    def pause_screen(self) -> bool:
+    def pause_screen(self):
         """
         pause screen in the level
-        :return: if the game should be continued
         """
+        self.status = LevelStatus.Paused
         continue_button = Button(
-            caption="Continue",
+            caption=t("Continue"),
             x=0.4,
-            y=0.45,
+            y=0.4,
             width=0.2,
-            textsize=0.2,
+            textsize=0.16,
+            hover_color=BLACK2
+        )
+        restart_button = Button(
+            caption=t("Restart Level"),
+            x=0.35,
+            y=0.55,
+            width=0.3,
+            textsize=0.12,
             hover_color=BLACK2
         )
         quit_button = Button(
-            caption="Quit",
-            x=0.45,
-            y=0.6,
+            caption=t("Back to Title Screen"),
+            x=0.325,
+            y=0.7,
+            width=0.35,
+            textsize=0.09,
             hover_color=BLACK2
         )
-        while True:
+        while self.status == LevelStatus.Paused:
             for event in pygame.event.get():
                 # close the program if the window should be closed
                 if event.type == pygame.QUIT:
@@ -210,12 +218,19 @@ class Level:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     # handle click of continue button
                     if continue_button.check_on(self.surface):
-                        return True
-                    # handle click of next button
-                    if quit_button.check_on(self.surface):
-                        return False
+                        self.status = LevelStatus.Running
+                        # give the player some time to react
+                        sleep(0.5)
+                    # handle click of quit button
+                    elif quit_button.check_on(self.surface):
+                        self.status = LevelStatus.Quit
+                    # handle click of restart button
+                    elif restart_button.check_on(self.surface):
+                        self.status = LevelStatus.Restart
             # render the continue button
             continue_button.render(self.surface)
+            # render the restart button
+            restart_button.render(self.surface)
             # render the quit button
             quit_button.render(self.surface)
             # update the screen

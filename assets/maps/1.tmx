@@ -26,9 +26,7 @@
  <objectgroup id="5" name="Signs">
   <object id="21" name="jump sign" gid="15" x="160" y="192" width="16" height="16">
    <properties>
-    <property name="content" value=""/>
-    <property name="description" value="You can jump with &quot;w&quot;!"/>
-    <property name="test" type="bool" value="true"/>
+    <property name="description" value="hint2"/>
    </properties>
   </object>
  </objectgroup>

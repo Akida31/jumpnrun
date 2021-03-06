@@ -26,9 +26,7 @@
  <objectgroup id="5" name="Signs">
   <object id="21" name="start sign" gid="15" x="16" y="192" width="16" height="16">
    <properties>
-    <property name="content" value=""/>
-    <property name="description" value="Press &quot;a&quot; to move left and &quot;d&quot; to move right. |n Collect the coin!"/>
-    <property name="test" type="bool" value="true"/>
+    <property name="description" value="hint1"/>
    </properties>
   </object>
  </objectgroup>

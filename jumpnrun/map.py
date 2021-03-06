@@ -76,8 +76,6 @@ class Map:
             x = sign.x // self.tmx.tilewidth
             y = sign.y // self.tmx.tilewidth
             description: str = sign.properties["description"]
-            # pytmx fails to load normal \n
-            description = description.replace("|n", "\n")
             signs.append(Sign(x, y, description, sign.image))
         return signs
 
