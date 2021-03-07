@@ -13,7 +13,11 @@ from jumpnrun.utils import quit_game
 from jumpnrun.widgets import Button, Label, XAlign, YAlign
 
 WHITE = pygame.Color(255, 255, 255)
+BLACK = pygame.Color(40, 42, 54)
 BLACK2 = pygame.Color(68, 71, 90)
+
+# FPS of the game
+FPS: int = 60
 
 
 class LevelStatus(Enum):
@@ -46,7 +50,7 @@ class Level:
             height=0.1,
             font_file="assets/fonts/carobtn.TTF",
             textsize=0.15,
-            color=WHITE,
+            color=BLACK,
             xalign=XAlign.LEFT
         )
 
@@ -59,13 +63,15 @@ class Level:
             height=0.4,
             font_file="assets/fonts/carobtn.TTF",
             textsize=0.05,
-            color=WHITE,
+            color=BLACK,
             bg_color=None,
             yalign=YAlign.TOP
         )
 
+        # create the background image
+        self.background = pygame.image.load("assets/img/backgrounds/landscape.png")
+
         # set the framerate of the game
-        self.FPS: int = 60
         self.clock = pygame.time.Clock()
         # load the map
         self.map = Map(level_file)
@@ -101,7 +107,7 @@ class Level:
             if len(self.objects["stars"]) == 0:
                 self.status = LevelStatus.Finished
             self.render()
-            self.clock.tick(self.FPS)
+            self.clock.tick(FPS)
         return (self.status, self.timer)
 
     def on_events(self):
@@ -131,8 +137,8 @@ class Level:
         render the window and all of its content
         """
         map_width, map_height = self.map.get_size()
-        # create temporary surface for transforming
-        surface = pygame.Surface((map_width, map_height))
+        # create temporary surface for transforming with transparent background
+        surface = pygame.Surface((map_width, map_height), pygame.SRCALPHA)
         # render the map
         self.map.render(surface)
         # render all objects
@@ -141,6 +147,8 @@ class Level:
                 element.render(surface)
         # render the player
         self.player.render(surface)
+        # render the background image
+        self.surface.blit(pygame.transform.scale(self.background, (self.width, self.height)), (0,0))
         # render the temporary surface to the full screen
         self.surface.blit(
             pygame.transform.scale(surface, (self.width, self.height)), (0, 0)
@@ -153,7 +161,7 @@ class Level:
         # render the timer
         self.time_label.set_caption(f"{t('Time')}: {self.timer}")
         self.time_label.render(self.surface)
-        pygame.display.update()
+        pygame.display.flip()
 
     def apply_physics(self):
         """
@@ -234,5 +242,5 @@ class Level:
             # render the quit button
             quit_button.render(self.surface)
             # update the screen
-            pygame.display.update()
+            pygame.display.flip()
 

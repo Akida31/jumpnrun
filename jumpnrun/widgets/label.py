@@ -31,6 +31,10 @@ class Label:
         self.xalign = xalign
         self.yalign = yalign
         self.line_spacing = line_spacing
+        # font rendering is a bottleneck in pygame
+        # so cache the real size and font
+        self._font: Optional[pygame.font.Font] = None
+        self._fontsize: int = -1
 
     def set_caption(self, caption: str):
         """
@@ -66,20 +70,22 @@ class Label:
         """
         render the text to the level surface
         """
-        # load the font and change it size with the window size
-        font = pygame.font.Font(self.font_file, int(self.textsize * width))
+        if self._fontsize != (fontsize := int(self.textsize * width)):
+            # load the font and change it size with the window size
+            self._fontsize = fontsize
+            self._font = pygame.font.Font(self.font_file, fontsize)
         # get all lines of the text
         lines = self.caption.splitlines()
         # create a temporary surface for the text
-        font_height = font.size("xX")[1]
+        font_height = self._font.size("xX")[1]
         text_height = font_height * ((len(lines) - 1) * self.line_spacing + 1)
         surface = pygame.Surface((width, height), pygame.SRCALPHA)
         # render each line to the surface
         for i, line in enumerate(lines):
             # create the text from the font with the given caption and color
-            text = font.render(line, True, self.color)
+            text = self._font.render(line, True, self.color)
             # determine the width of the rendered text
-            font_width = font.size(line)[0]
+            font_width = self._font.size(line)[0]
             # calculate the xalignment
             if self.xalign == XAlign.LEFT:
                 font_x: int = 0

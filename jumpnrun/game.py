@@ -9,6 +9,9 @@ from jumpnrun.widgets import Button
 
 BLACK2 = pygame.Color(68, 71, 90)
 
+# FPS dont have to be so high for an UI
+# higher FPS increased the CPU usage massively
+FPS: int = 30
 
 class Game:
     def __init__(self):
@@ -21,14 +24,19 @@ class Game:
         pygame.display.set_caption("Jumpnrun")
         self.width: int = 1200
         self.height: int = 600
+        # flags for the window
+        # doublebuf and opengl improve the performance massively
+        flags = pygame.RESIZABLE | pygame.DOUBLEBUF
         # create the window
         self.surface: pygame.Surface = pygame.display.set_mode(
-            (self.width, self.height), flags=pygame.RESIZABLE
+            (self.width, self.height), flags=flags
         )
         # location of all levels
         self.levels: List[str] = ["assets/maps/0.tmx", "assets/maps/1.tmx", "assets/maps/test.tmx"]
         # set language
         t.change_language(Language.DE)
+        # set the framerate of the game
+        self.clock = pygame.time.Clock()
 
     def run(self):
         """
@@ -76,7 +84,8 @@ class Game:
             start_btn.render(self.surface)
             quit_btn.render(self.surface)
             # update the screen
-            pygame.display.update()
+            pygame.display.flip()
+            self.clock.tick(FPS)
 
     def levelscreen(self):
         """
@@ -139,7 +148,8 @@ class Game:
             # render the back button
             back_button.render(self.surface)
             # update the screen
-            pygame.display.update()
+            pygame.display.flip()
+            self.clock.tick(FPS)
 
     def endscreen(self, level: int, time: Optional[int]) -> bool:
         """
@@ -192,4 +202,6 @@ class Game:
             if level < len(self.levels) - 1:
                 next_button.render(self.surface)
             # update the screen
-            pygame.display.update()
+            pygame.display.flip()
+            self.clock.tick(FPS)
+
