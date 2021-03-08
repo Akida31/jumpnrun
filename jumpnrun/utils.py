@@ -1,9 +1,19 @@
-from typing import List, Optional, Tuple
-import pygame
+from enum import Enum
 import sys
+from typing import List, Optional, Tuple
+
+import pygame
 
 # Tilesize of the map
 TILESIZE: int = 16
+
+
+class LevelStatus(Enum):
+    Paused = (0,)
+    Running = (1,)
+    Finished = (2,)
+    Quit = (3,)
+    Restart = 4
 
 
 def quit_game():
@@ -57,4 +67,3 @@ def load_spritesheet(
             line.append(image.subsurface(rect))
         sheet.append(line)
     return sheet
-

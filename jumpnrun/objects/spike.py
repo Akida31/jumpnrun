@@ -1,25 +1,23 @@
 import pygame
 
-from jumpnrun.utils import TILESIZE
 
-
-class Sign(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, description: str, image):
+class Spike(pygame.sprite.Sprite):
+    def __init__(self, x: int, y: int, width: int, height: int, image):
         # init the Sprite class
         super().__init__()
-        # compute the real x and y position
-        self.x: int = x * TILESIZE
-        self.y: int = y * TILESIZE
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
         # save the image for the rendering
-        self.image = image
-        self.description = description
+        self.image = pygame.transform.scale(image, (width, height))
 
     @property
     def rect(self) -> pygame.Rect:
         """
         getter for rect, is used internally by collision detection from pygame
         """
-        return pygame.Rect(self.x, self.y, TILESIZE, TILESIZE)
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def render(self, surface: pygame.Surface):
         """
@@ -27,12 +25,9 @@ class Sign(pygame.sprite.Sprite):
         """
         surface.blit(self.image, self.rect)
 
-    def get_description(self):
-        return self.description
-
     def apply_physics(self, *_):
         """
-        signs dont have physics, so do nothing
+        spikes dont have physics, so do nothing
 
         take any arguments given so this won't create effort later
         """

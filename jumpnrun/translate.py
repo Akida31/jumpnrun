@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Language(Enum):
-    DE = "DE",
+    DE = ("DE",)
     EN = "EN"
 
 
@@ -10,6 +10,7 @@ class Translator:
     """
     basic translation class
     """
+
     def __init__(self, language: Language = Language.EN):
         """
         create a translator
@@ -40,13 +41,15 @@ class Translator:
         # return the input back
         return text
 
+
 # create a global translator
 t = Translator()
 
 translations = {
     "EN": {
         "hint1": 'Press "a" to move left and "d" to move right.\nCollect the coin!',
-        "hint2": 'You can jump with "w"!'},
+        "hint2": 'You can jump with "w"!',
+    },
     "DE": {
         "Quit Game": "Spiel beenden",
         "Continue": "Fortfahren",
@@ -56,6 +59,6 @@ translations = {
         "Time": "Zeit",
         "Next Level": "Nächstes Level",
         "hint1": 'Drücke "a" um dich nach links zu bewegen\nund "d" um dich nach rechts zu bewegen.\nSammle die Münze!',
-        "hint2": 'Du kannst mit "w" springen!'
-    }
+        "hint2": 'Du kannst mit "w" springen!',
+    },
 }

@@ -1,7 +1,8 @@
 {
-    "activeFile": "1.tmx",
+    "activeFile": "test.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
             "scaleInDock": 1
@@ -11,15 +12,15 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 240,
-                "y": 119.83333333333334
+                "y": 119.99999999999999
             }
         },
         "1.tmx": {
             "scale": 2.0662499999999997,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 239.56442831215975,
-                "y": 120.26618269812464
+                "x": 168.42105263157896,
+                "y": 200.36297640653356
             }
         },
         "characters.tsx": {
@@ -36,36 +37,54 @@
         },
         "sheet.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 2,
+            "scaleInDock": 2.2841,
             "scaleInEditor": 4
+        },
+        "spikes.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.25,
+            "scaleInEditor": 0.14
         },
         "swoosh.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 4
         },
-        "test.tmx": {
-            "scale": 2,
-            "selectedLayer": 0,
+        "template.tmx": {
+            "scale": 2.0027,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
-                "y": 120.25
+                "x": 368.5025215958456,
+                "y": 181.25530533779397
+            }
+        },
+        "test.tmx": {
+            "scale": 6.7401,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 259.0466016824676,
+                "y": 219.8780433524725
             }
         }
     },
     "openFiles": [
         "0.tmx",
         "1.tmx",
-        "test.tmx"
+        "test.tmx",
+        "template.tmx"
     ],
     "project": "jumpnrun.tiled-project",
     "recentFiles": [
         "0.tmx",
-        "test.tmx",
         "1.tmx",
+        "template.tmx",
+        "test.tmx",
+        "spikes.tsx",
         "swoosh.tsx",
         "sheet.tsx",
         "characters2.tsx",
         "characters3.tsx",
         "characters.tsx"
-    ]
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
 }

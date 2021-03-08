@@ -4,8 +4,7 @@ from typing import Tuple, List
 from pygame import Surface
 from pytmx.util_pygame import load_pygame
 
-from jumpnrun.objects.sign import Sign
-from jumpnrun.objects.star import Star
+from jumpnrun.objects import Sign, Spike, Star
 
 
 class Map:
@@ -65,19 +64,31 @@ class Map:
     def get_signs(self) -> List[Sign]:
         """
         get all signs
-
-        returns a Dictionary in which the description is mapped
-        to the position (x,y)
         """
         # load the sign layer
         layer = self.tmx.get_layer_by_name("Signs")
         signs: List[Sign] = []
         for sign in layer:
             x = sign.x // self.tmx.tilewidth
-            y = sign.y // self.tmx.tilewidth
+            y = sign.y // self.tmx.tileheight
             description: str = sign.properties["description"]
             signs.append(Sign(x, y, description, sign.image))
         return signs
+
+    def get_spikes(self) -> List[Spike]:
+        """
+        get all spikes
+        """
+        # load the spike layer
+        layer = self.tmx.get_layer_by_name("Spikes")
+        spikes: List[Spike] = []
+        for spike in layer:
+            x = spike.x
+            y = spike.y
+            width = int(spike.width)
+            height = int(spike.height)
+            spikes.append(Spike(x, y, width, height, spike.image))
+        return spikes
 
     def render(self, surface: Surface):
         """
@@ -93,15 +104,19 @@ class Map:
                 # show each tile of the map with the real position now
                 surface.blit(image, (x * self.tmx.tilewidth, y * self.tmx.tileheight))
 
-    def check_collide(self, x: int, y: int) -> bool:
+    def check_collide(self, x: float, y: float) -> bool:
         """
         check if a field has a collision
 
-        there is also collision with the borders of the screen
+        there is also collision with the vertical borders of the screen
         """
         # check if the field is outside of the screen
-        if x < 0 or y < 0 or x >= self.tmx.width or y >= self.tmx.height:
+        if x < 0 or x >= self.tmx.width:
             return True
+        # there shouldn't be a collision with the horizontal borders
+        # but pytmx throws an exception if a tile outside the layer is accessed
+        if y < 0 or y >= self.tmx.height:
+            return False
         for layer in self.tmx.visible_tile_layers:
             # check each tile of the map if it is a collider
             properties = self.tmx.get_tile_properties(x, y, layer)

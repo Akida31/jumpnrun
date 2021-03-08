@@ -10,15 +10,21 @@ class Label:
     a simple label
     """
 
-    def __init__(self, caption: str, x: float, y: float,
-                 width: float, height: float,
-                 font_file: str,
-                 textsize: float,
-                 color: pygame.Color,
-                 bg_color: Optional[pygame.Color] = None,
-                 xalign: XAlign = XAlign.CENTER,
-                 yalign: YAlign = YAlign.CENTER,
-                 line_spacing: float = 1.25):
+    def __init__(
+        self,
+        caption: str,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        font_file: str,
+        textsize: float,
+        color: pygame.Color,
+        bg_color: Optional[pygame.Color] = None,
+        xalign: XAlign = XAlign.CENTER,
+        yalign: YAlign = YAlign.CENTER,
+        line_spacing: float = 1.25,
+    ):
         self.caption = caption
         self.x = x
         self.y = y

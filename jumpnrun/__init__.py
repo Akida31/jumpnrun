@@ -1,5 +1,6 @@
 from jumpnrun.game import Game
 
+
 def main():
     """
     create and run the game

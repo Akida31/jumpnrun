@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="22">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="23">
  <tileset firstgid="1" source="sheet.tsx"/>
+ <tileset firstgid="137" source="spikes.tsx"/>
  <layer id="1" name="Map" width="30" height="15">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -23,12 +24,13 @@
  <objectgroup id="3" name="Objects">
   <object id="8" name="player" x="16" y="160" width="16" height="16"/>
  </objectgroup>
+ <objectgroup id="6" name="Spikes">
+  <object id="22" gid="139" x="224" y="192" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="5" name="Signs">
-  <object id="21" name="asdf" gid="15" x="16" y="192" width="16" height="16">
+  <object id="21" name="asdf" gid="15" x="144" y="192" width="16" height="16">
    <properties>
-    <property name="content" value=""/>
-    <property name="description" value="Press a to move left and d to move right. |n Collect the coin!"/>
-    <property name="test" type="bool" value="true"/>
+    <property name="description" value="hint1"/>
    </properties>
   </object>
  </objectgroup>

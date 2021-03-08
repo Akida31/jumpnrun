@@ -1,31 +1,18 @@
-from enum import Enum
-from time import sleep
 from typing import Dict, List, Tuple
 
 import pygame
 
 from jumpnrun.characters.player import Player
+from jumpnrun.colors import BLACK
 from jumpnrun.map import Map
-from jumpnrun.objects.sign import Sign
-from jumpnrun.objects.star import Star
+from jumpnrun.objects import Sign, Spike, Star
+from jumpnrun.screens.pause import pause_screen
 from jumpnrun.translate import t
-from jumpnrun.utils import quit_game
-from jumpnrun.widgets import Button, Label, XAlign, YAlign
-
-WHITE = pygame.Color(255, 255, 255)
-BLACK = pygame.Color(40, 42, 54)
-BLACK2 = pygame.Color(68, 71, 90)
+from jumpnrun.utils import LevelStatus, quit_game
+from jumpnrun.widgets import Label, XAlign, YAlign
 
 # FPS of the game
 FPS: int = 60
-
-
-class LevelStatus(Enum):
-    Paused = 0,
-    Running = 1,
-    Finished = 2,
-    Quit = 3,
-    Restart = 4
 
 
 class Level:
@@ -51,7 +38,7 @@ class Level:
             font_file="assets/fonts/carobtn.TTF",
             textsize=0.15,
             color=BLACK,
-            xalign=XAlign.LEFT
+            xalign=XAlign.LEFT,
         )
 
         # create a label for the description of signs
@@ -65,7 +52,7 @@ class Level:
             textsize=0.05,
             color=BLACK,
             bg_color=None,
-            yalign=YAlign.TOP
+            yalign=YAlign.TOP,
         )
 
         # create the background image
@@ -87,6 +74,9 @@ class Level:
         # load all signs
         signs: List[Sign] = self.map.get_signs()
         self.objects["signs"] = signs
+        # load all spikes
+        spikes: List[Spike] = self.map.get_spikes()
+        self.objects["spikes"] = spikes
         self.status = LevelStatus.Running
         # create a timer
         self.timer = 0
@@ -103,6 +93,10 @@ class Level:
             self.timer += 1
             self.apply_physics()
             self.player.interact(self.objects)
+            # check if the player is alive
+            if not self.player.alive:
+                self.status = LevelStatus.Restart
+                break
             # if the player hit all stars end the level
             if len(self.objects["stars"]) == 0:
                 self.status = LevelStatus.Finished
@@ -148,13 +142,17 @@ class Level:
         # render the player
         self.player.render(surface)
         # render the background image
-        self.surface.blit(pygame.transform.scale(self.background, (self.width, self.height)), (0,0))
+        self.surface.blit(
+            pygame.transform.scale(self.background, (self.width, self.height)), (0, 0)
+        )
         # render the temporary surface to the full screen
         self.surface.blit(
             pygame.transform.scale(surface, (self.width, self.height)), (0, 0)
         )
         # render the description of a sign if a player stands on one
-        if collision := pygame.sprite.spritecollideany(self.player, self.objects["signs"]):
+        if collision := pygame.sprite.spritecollideany(
+            self.player, self.objects["signs"]
+        ):
             self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)
 
@@ -180,67 +178,10 @@ class Level:
         if keys[pygame.K_q]:
             quit_game()
         if keys[pygame.K_ESCAPE]:
-            self.pause_screen()
+            self.status = pause_screen(self.surface)
         if keys[pygame.K_w]:
             self.player.jump(self.map)
         if keys[pygame.K_a]:
             self.player.go_left(self.map)
         if keys[pygame.K_d]:
             self.player.go_right(self.map)
-
-    def pause_screen(self):
-        """
-        pause screen in the level
-        """
-        self.status = LevelStatus.Paused
-        continue_button = Button(
-            caption=t("Continue"),
-            x=0.4,
-            y=0.4,
-            width=0.2,
-            textsize=0.16,
-            hover_color=BLACK2
-        )
-        restart_button = Button(
-            caption=t("Restart Level"),
-            x=0.35,
-            y=0.55,
-            width=0.3,
-            textsize=0.12,
-            hover_color=BLACK2
-        )
-        quit_button = Button(
-            caption=t("Back to Title Screen"),
-            x=0.325,
-            y=0.7,
-            width=0.35,
-            textsize=0.09,
-            hover_color=BLACK2
-        )
-        while self.status == LevelStatus.Paused:
-            for event in pygame.event.get():
-                # close the program if the window should be closed
-                if event.type == pygame.QUIT:
-                    quit_game()
-                # handle click
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    # handle click of continue button
-                    if continue_button.check_on(self.surface):
-                        self.status = LevelStatus.Running
-                        # give the player some time to react
-                        sleep(0.5)
-                    # handle click of quit button
-                    elif quit_button.check_on(self.surface):
-                        self.status = LevelStatus.Quit
-                    # handle click of restart button
-                    elif restart_button.check_on(self.surface):
-                        self.status = LevelStatus.Restart
-            # render the continue button
-            continue_button.render(self.surface)
-            # render the restart button
-            restart_button.render(self.surface)
-            # render the quit button
-            quit_button.render(self.surface)
-            # update the screen
-            pygame.display.flip()
-

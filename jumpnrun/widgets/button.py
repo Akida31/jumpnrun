@@ -15,19 +15,19 @@ class Button:
     """
 
     def __init__(
-            self,
-            caption: str,
-            x: float,
-            y: float,
-            width: float = 0.15,
-            height: float = 0.1,
-            textsize: float = 0.24,
-            font_file: str = "assets/fonts/carobtn.TTF",
-            color: pygame.Color = WHITE,
-            bg_color: pygame.Color = BLACK,
-            hover_color: Optional[pygame.Color] = None,
-            xalign: XAlign = XAlign.CENTER,
-            yalign: YAlign = YAlign.CENTER
+        self,
+        caption: str,
+        x: float,
+        y: float,
+        width: float = 0.15,
+        height: float = 0.1,
+        textsize: float = 0.24,
+        font_file: str = "assets/fonts/carobtn.TTF",
+        color: pygame.Color = WHITE,
+        bg_color: pygame.Color = BLACK,
+        hover_color: Optional[pygame.Color] = None,
+        xalign: XAlign = XAlign.CENTER,
+        yalign: YAlign = YAlign.CENTER,
     ):
         self.x = x
         self.y = y
@@ -51,7 +51,7 @@ class Button:
             color=color,
             bg_color=bg_color,
             xalign=xalign,
-            yalign=yalign
+            yalign=yalign,
         )
 
     def render(self, out_surface: pygame.Surface):
