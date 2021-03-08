@@ -1,6 +1,6 @@
-from enum import Enum
 import sys
-from typing import List, Optional, Tuple
+from enum import Enum
+from typing import List, Optional
 
 import pygame
 
@@ -25,14 +25,13 @@ def quit_game():
 
 
 def load_spritesheet(
-    filename: str,
-    tile_width: int,
-    tile_height: Optional[int] = None,
-    offset_x: int = 0,
-    offset_y: int = 0,
-    spacing_x: int = 0,
-    spacing_y: int = 0,
-    alphacolor: Optional[Tuple[int, int, int]] = None,
+        filename: str,
+        tile_width: int,
+        tile_height: Optional[int] = None,
+        offset_x: int = 0,
+        offset_y: int = 0,
+        spacing_x: int = 0,
+        spacing_y: int = 0,
 ) -> List[List[pygame.Surface]]:
     """
     load a spritesheet from a given file
@@ -48,11 +47,6 @@ def load_spritesheet(
     if tile_height is None:
         tile_height = tile_width
     image = pygame.image.load(filename).convert()
-    # TODO is this still necessary?
-    # if alphacolor is None:
-    # determine the alphacolor from the pixel in the top left corner
-    # alphacolor = image.get_at((0, 0))
-    # image.set_colorkey(alphacolor)
     width, height = image.get_size()
     tiles_x = (width - offset_x + spacing_x) // (tile_width + spacing_x)
     tiles_y = (height - offset_y + spacing_y) // (tile_height + spacing_y)

@@ -11,7 +11,7 @@ from .level import level_screen
 
 
 def main_screen(
-    surface: pygame.Surface, FPS: int, clock: pygame.time.Clock, levels: List[str]
+    surface: pygame.Surface, fps: int, clock: pygame.time.Clock, levels: List[str]
 ):
     """
     the screen on the beginning of the game
@@ -41,7 +41,7 @@ def main_screen(
             # handle click
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn.check_on(surface):
-                    level_screen(surface, FPS, clock, levels)
+                    level_screen(surface, fps, clock, levels)
                 elif quit_btn.check_on(surface):
                     quit_game()
         # render the background image
@@ -53,4 +53,4 @@ def main_screen(
         quit_btn.render(surface)
         # update the screen
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(fps)

@@ -102,7 +102,7 @@ class Level:
                 self.status = LevelStatus.Finished
             self.render()
             self.clock.tick(FPS)
-        return (self.status, self.timer)
+        return self.status, self.timer
 
     def on_events(self):
         """
@@ -151,7 +151,7 @@ class Level:
         )
         # render the description of a sign if a player stands on one
         if collision := pygame.sprite.spritecollideany(
-            self.player, self.objects["signs"]
+                self.player, self.objects["signs"]
         ):
             self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)

@@ -12,7 +12,7 @@ from .end import end_screen
 
 
 def level_screen(
-    surface: pygame.Surface, FPS: int, clock: pygame.time.Clock, levels: List[str]
+    surface: pygame.Surface, fps: int, clock: pygame.time.Clock, levels: List[str]
 ):
     """
     give the player the ability to choose a level
@@ -54,7 +54,7 @@ def level_screen(
                             (status, time) = level.run()
                             # show endscreen only if the level was completed
                             if status == LevelStatus.Finished:
-                                start = end_screen(surface, i, time, FPS, clock, levels)
+                                start = end_screen(surface, i, time, fps, clock, levels)
                                 i += 1
                             elif status == LevelStatus.Restart:
                                 pass
@@ -75,4 +75,4 @@ def level_screen(
         back_button.render(surface)
         # update the screen
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(fps)

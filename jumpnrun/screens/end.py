@@ -12,7 +12,7 @@ def end_screen(
     surface: pygame.Surface,
     level: int,
     time: Optional[int],
-    FPS: int,
+    fps: int,
     clock: pygame.time.Clock,
     levels: List[str],
 ) -> bool:
@@ -67,4 +67,4 @@ def end_screen(
             next_button.render(surface)
         # update the screen
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(fps)
