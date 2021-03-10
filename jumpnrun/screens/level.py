@@ -49,6 +49,15 @@ def level_screen(
                     # start the clicked level
                     if button.check_on(surface):
                         start = True
+                        # load the level music
+                        pygame.mixer.music.load("assets/music/little_town.ogg")
+                        pygame.mixer.music.queue("assets/music/The_Old_Tower_Inn.ogg")
+                        pygame.mixer.music.queue("assets/music/the_field_of_dreams.ogg")
+                        pygame.mixer.music.queue("assets/music/Fantasy_Choir_1.ogg")
+                        pygame.mixer.music.queue("assets/music/Fantasy_Choir_2.ogg")
+                        pygame.mixer.music.queue("assets/music/Fantasy_Choir_3.ogg")
+                        # play the music in a loop and fade it in
+                        pygame.mixer.music.play(loops=-1, fade_ms=500)
                         while start:
                             level = Level(levels[i], surface)
                             (status, time) = level.run()

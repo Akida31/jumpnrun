@@ -31,6 +31,11 @@ def main_screen(
         textsize=0.16,
         hover_color=BLACK2,
     )
+    # load the music
+    pygame.mixer.music.load("assets/music/Lonely_Witch.ogg")
+    # play the music in a loop and fade it in
+    pygame.mixer.music.play(loops=-1, fade_ms=500)
+
     image = pygame.image.load("assets/img/screenshot.png")
     # TODO settings screen
     while True:

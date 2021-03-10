@@ -10,3 +10,12 @@
 (Industrial Parallax by ansimuz)[https://opengameart.org/users/ansimuz]
 (Seamles HD Landscape in Parts by PWL)[https://opengameart.org/users/pwl]
 (Seamless Desert Background in Parts by PWL)[https://opengameart.org/users/pwl]
+
+## Music
+(The Field of Dreams by pauliuw)[https://opengameart.org/users/pauliuw]
+(Little Town - The Adventure Begins by bart)[https://opengameart.org/users/bart]
+(The Old Tower Inn)[https://opengameart.org/users/RandomMind]
+(Lonely Witch by HorrorPen)[https://opengameart.org/users/HorrorPen]
+(Fantasy Choir by Cesar da Rocha)[https://opengameart.org/users/cesisco]
+
+## Sounds

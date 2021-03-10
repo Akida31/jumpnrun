@@ -71,6 +71,10 @@ class Level:
         # load the position of the stars
         stars: List[Star] = self.map.get_stars()
         self.objects["stars"] = stars
+        # load the star hints
+        self.star_hints: List[Star] = []
+        for i in range(len(self.objects["stars"])):
+            self.star_hints.append(Star(["assets/img/star/shine/1.png"], 1+i, 2))
         # load all signs
         signs: List[Sign] = self.map.get_signs()
         self.objects["signs"] = signs
@@ -145,6 +149,9 @@ class Level:
         self.surface.blit(
             pygame.transform.scale(self.background, (self.width, self.height)), (0, 0)
         )
+        # render the hint stars
+        for i in range(len(self.objects["stars"])):
+            self.star_hints[i].render(surface)
         # render the temporary surface to the full screen
         self.surface.blit(
             pygame.transform.scale(surface, (self.width, self.height)), (0, 0)

@@ -72,7 +72,7 @@ class Map:
             x = sign.x // self.tmx.tilewidth
             y = sign.y // self.tmx.tileheight
             description: str = sign.properties["description"]
-            signs.append(Sign(x, y, description, sign.image))
+        signs.append(Sign(x, y, description, sign.image))
         return signs
 
     def get_spikes(self) -> List[Spike]:
