@@ -85,7 +85,7 @@ class Level:
         # create a timer
         self.timer = 0
 
-    def run(self) -> Tuple[LevelStatus, int]:
+    def run(self) -> Tuple[LevelStatus, float]:
         """
         gameloop, running the game
 
@@ -106,7 +106,14 @@ class Level:
                 self.status = LevelStatus.Finished
             self.render()
             self.clock.tick(FPS)
-        return self.status, self.timer
+        return self.status, self.get_time()
+
+
+    def get_time(self) -> float:
+        """
+        get the time in seconds
+        """
+        return round(self.timer / FPS, 3)
 
     def on_events(self):
         """
@@ -134,6 +141,7 @@ class Level:
         """
         render the window and all of its content
         """
+        # TODO use dt
         map_width, map_height = self.map.get_size()
         # create temporary surface for transforming with transparent background
         surface = pygame.Surface((map_width, map_height), pygame.SRCALPHA)
@@ -143,7 +151,7 @@ class Level:
         for group in self.objects:
             for element in self.objects[group]:
                 element.render(surface)
-        # render the player
+        # render the playu
         self.player.render(surface)
         # render the background image
         self.surface.blit(
@@ -164,7 +172,7 @@ class Level:
             self.sign_label.render(self.surface)
 
         # render the timer
-        self.time_label.set_caption(f"{t('Time')}: {self.timer}")
+        self.time_label.set_caption(f"{t('Time')}: {self.get_time()}")
         self.time_label.render(self.surface)
         pygame.display.flip()
 

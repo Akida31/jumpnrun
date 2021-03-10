@@ -2,10 +2,9 @@ from typing import List, Optional
 
 import pygame
 
-from jumpnrun.colors import BLACK2
 from jumpnrun.translate import t
 from jumpnrun.utils import quit_game
-from jumpnrun.widgets import Button
+from jumpnrun.widgets import Button, Label
 
 
 def end_screen(
@@ -24,15 +23,21 @@ def end_screen(
 
     returns if the next level should be started
     """
-    # TODO show time
-    print(f"completed Level {level} in {time}")
+    time_label = Label(
+        caption=f"{t('Completed Level #x in #ts')}"
+            .replace("#x", str(level + 1))
+            .replace("#t", str(time)),
+        x=0.25,
+        y=0.2,
+        width=0.5,
+        textsize=0.06,
+    )
     next_button = Button(
         caption=t("Next Level"),
         x=0.375,
         y=0.45,
         width=0.25,
         textsize=0.14,
-        hover_color=BLACK2,
     )
     back_button = Button(
         caption=t("Back to Title Screen"),
@@ -40,7 +45,6 @@ def end_screen(
         y=0.6,
         width=0.35,
         textsize=0.09,
-        hover_color=BLACK2,
     )
     image = pygame.image.load("assets/img/screenshot.png")
     while True:
@@ -60,7 +64,7 @@ def end_screen(
         width = surface.get_width()
         height = surface.get_height()
         surface.blit(pygame.transform.scale(image, (width, height)), (0, 0))
-        # render the back button
+        time_label.render(surface)
         back_button.render(surface)
         # render the next button it there is a next level
         if level < len(levels) - 1:

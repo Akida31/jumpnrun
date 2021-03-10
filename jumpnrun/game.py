@@ -5,8 +5,6 @@ import pygame
 from jumpnrun.screens.main import main_screen
 from jumpnrun.translate import Language, t
 
-BLACK2 = pygame.Color(68, 71, 90)
-
 # FPS dont have to be so high for an UI
 # higher FPS increased the CPU usage massively
 FPS: int = 30
@@ -37,7 +35,7 @@ class Game:
             "assets/maps/test.tmx",
         ]
         # set language
-        t.change_language(Language.DE)
+        t.change_language(Language.EN)
         # set the framerate of the game
         self.clock = pygame.time.Clock()
 

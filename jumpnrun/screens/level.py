@@ -2,7 +2,6 @@ from typing import List
 
 import pygame
 
-from jumpnrun.colors import BLACK2
 from jumpnrun.level import Level
 from jumpnrun.translate import t
 from jumpnrun.utils import LevelStatus, quit_game
@@ -17,7 +16,6 @@ def level_screen(
     """
     give the player the ability to choose a level
     """
-    # TODO headline
     level_buttons: List[Button] = []
     for i, level in enumerate(levels):
         button = Button(
@@ -25,7 +23,6 @@ def level_screen(
             x=(i % 4) * 0.2 + 0.1,
             y=(i // 4) * 0.2 + 0.2,
             textsize=0.2,
-            hover_color=BLACK2,
         )
         level_buttons.append(button)
     back_button = Button(
@@ -34,7 +31,6 @@ def level_screen(
         y=0.7,
         width=0.35,
         textsize=0.09,
-        hover_color=BLACK2,
     )
     image = pygame.image.load("assets/img/screenshot.png")
     while True:

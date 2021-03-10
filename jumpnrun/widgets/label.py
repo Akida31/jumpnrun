@@ -3,6 +3,7 @@ from typing import Optional
 import pygame
 
 from jumpnrun.widgets import XAlign, YAlign
+from jumpnrun.colors import WHITE
 
 
 class Label:
@@ -15,11 +16,11 @@ class Label:
         caption: str,
         x: float,
         y: float,
-        width: float,
-        height: float,
-        font_file: str,
-        textsize: float,
-        color: pygame.Color,
+        width: float = 0.15,
+        height: float = 0.1,
+        textsize: float = 0.24,
+        font_file: str = "assets/fonts/carobtn.TTF",
+        color: pygame.Color = WHITE,
         bg_color: Optional[pygame.Color] = None,
         xalign: XAlign = XAlign.CENTER,
         yalign: YAlign = YAlign.CENTER,

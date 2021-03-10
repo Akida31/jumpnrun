@@ -2,7 +2,6 @@ from time import sleep
 
 import pygame
 
-from jumpnrun.colors import BLACK2
 from jumpnrun.utils import LevelStatus
 from jumpnrun.translate import t
 from jumpnrun.utils import quit_game
@@ -20,7 +19,6 @@ def pause_screen(surface: pygame.Surface) -> LevelStatus:
         y=0.4,
         width=0.2,
         textsize=0.16,
-        hover_color=BLACK2,
     )
     restart_button = Button(
         caption=t("Restart Level"),
@@ -28,7 +26,6 @@ def pause_screen(surface: pygame.Surface) -> LevelStatus:
         y=0.55,
         width=0.3,
         textsize=0.12,
-        hover_color=BLACK2,
     )
     quit_button = Button(
         caption=t("Back to Title Screen"),
@@ -36,7 +33,6 @@ def pause_screen(surface: pygame.Surface) -> LevelStatus:
         y=0.7,
         width=0.35,
         textsize=0.09,
-        hover_color=BLACK2,
     )
     while status == LevelStatus.Paused:
         for event in pygame.event.get():

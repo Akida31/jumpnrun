@@ -2,10 +2,7 @@ from typing import Optional
 
 import pygame
 from jumpnrun.widgets import Label, XAlign, YAlign
-
-WHITE = pygame.Color(255, 255, 255)
-BLACK = pygame.Color(40, 42, 54)
-
+from jumpnrun.colors import BLACK, WHITE
 
 class Button:
     """
@@ -37,8 +34,8 @@ class Button:
         if hover_color:
             self.hover_color = hover_color
         else:
-            # TODO generate hover color manually
-            self.hover_color = bg_color
+            # generate a lighter version of the bg_color as hover_color
+            self.hover_color = bg_color + pygame.Color(30, 30, 30)
         # create the label of the content
         self.label = Label(
             caption=caption,
