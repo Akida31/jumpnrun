@@ -17,10 +17,11 @@ def main_screen(
     """
     headline = Label(
         caption="Jumpnrun",
-        x=0.35,
+        x=0.3,
         y=0.1,
-        width=0.3,
+        width=0.4,
         height=0.2,
+        textsize=8
     )
     start_btn = Button(
         caption=t("Start"),
@@ -32,14 +33,12 @@ def main_screen(
         x=0.4,
         y=0.5,
         width=0.2,
-        textsize=0.16,
     )
     quit_btn = Button(
         caption=t("Quit Game"),
         x=0.4,
         y=0.65,
         width=0.2,
-        textsize=0.16,
     )
     # load the music
     pygame.mixer.music.load("assets/music/Lonely_Witch.ogg")

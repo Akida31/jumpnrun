@@ -22,7 +22,6 @@ def level_screen(
             caption=f"{t('Level')} {i + 1}",
             x=(i % 4) * 0.2 + 0.1,
             y=(i // 4) * 0.2 + 0.2,
-            textsize=0.2,
         )
         level_buttons.append(button)
     back_button = Button(
@@ -30,7 +29,6 @@ def level_screen(
         x=0.325,
         y=0.7,
         width=0.35,
-        textsize=0.09,
     )
     image = pygame.image.load("assets/img/screenshot.png")
     while True:
@@ -53,7 +51,7 @@ def level_screen(
                         pygame.mixer.music.queue("assets/music/Fantasy_Choir_2.ogg")
                         pygame.mixer.music.queue("assets/music/Fantasy_Choir_3.ogg")
                         # play the music in a loop and fade it in
-                        pygame.mixer.music.play(loops=-1, fade_ms=500)
+                        pygame.mixer.music.play(fade_ms=500)
                         while start:
                             level = Level(levels[i], surface)
                             (status, time) = level.run()
@@ -80,4 +78,4 @@ def level_screen(
         back_button.render(surface)
         # update the screen
         pygame.display.flip()
-        clock.tick(fps)
+        dt = clock.tick(fps)

@@ -8,11 +8,8 @@ from jumpnrun.map import Map
 from jumpnrun.objects import Sign, Spike, Star
 from jumpnrun.screens.pause import pause_screen
 from jumpnrun.translate import t
-from jumpnrun.utils import LevelStatus, quit_game
+from jumpnrun.utils import LevelStatus, quit_game, FPS
 from jumpnrun.widgets import Label, XAlign, YAlign
-
-# FPS of the game
-FPS: int = 60
 
 
 class Level:
@@ -36,7 +33,6 @@ class Level:
             width=0.25,
             height=0.1,
             font_file="assets/fonts/carobtn.TTF",
-            textsize=0.15,
             color=BLACK,
             xalign=XAlign.LEFT,
         )
@@ -49,7 +45,7 @@ class Level:
             width=0.6,
             height=0.4,
             font_file="assets/fonts/carobtn.TTF",
-            textsize=0.05,
+            textsize=2.5,
             color=BLACK,
             bg_color=None,
             yalign=YAlign.TOP,
@@ -82,8 +78,7 @@ class Level:
         spikes: List[Spike] = self.map.get_spikes()
         self.objects["spikes"] = spikes
         self.status = LevelStatus.Running
-        # create a timer
-        self.timer = 0
+        self.timer: int = 0
 
     def run(self) -> Tuple[LevelStatus, float]:
         """
@@ -91,11 +86,13 @@ class Level:
 
         returns the status of the end and the time which the game ran
         """
+        # the time between frames is not everytime the same so use the difference
+        dt: int = 1000
         while self.status == LevelStatus.Running:
-            self.on_events()
             # update the timer
-            self.timer += 1
-            self.apply_physics()
+            self.timer += dt
+            self.on_events()
+            self.apply_physics(dt)
             self.player.interact(self.objects)
             # check if the player is alive
             if not self.player.alive:
@@ -105,7 +102,7 @@ class Level:
             if len(self.objects["stars"]) == 0:
                 self.status = LevelStatus.Finished
             self.render()
-            self.clock.tick(FPS)
+            dt = self.clock.tick(FPS)
         return self.status, self.get_time()
 
 
@@ -113,7 +110,7 @@ class Level:
         """
         get the time in seconds
         """
-        return round(self.timer / FPS, 3)
+        return round(self.timer / 1000, 2)
 
     def on_events(self):
         """
@@ -141,7 +138,6 @@ class Level:
         """
         render the window and all of its content
         """
-        # TODO use dt
         map_width, map_height = self.map.get_size()
         # create temporary surface for transforming with transparent background
         surface = pygame.Surface((map_width, map_height), pygame.SRCALPHA)
@@ -151,7 +147,7 @@ class Level:
         for group in self.objects:
             for element in self.objects[group]:
                 element.render(surface)
-        # render the playu
+        # render the player
         self.player.render(surface)
         # render the background image
         self.surface.blit(
@@ -176,14 +172,16 @@ class Level:
         self.time_label.render(self.surface)
         pygame.display.flip()
 
-    def apply_physics(self):
+    def apply_physics(self, dt: int):
         """
         apply physics to all objects
+
+        dt - the time since the last call
         """
         for group in self.objects:
             for element in self.objects[group]:
-                element.apply_physics(self.map)
-        self.player.apply_physics(self.map)
+                element.apply_physics(self.map, dt)
+        self.player.apply_physics(self.map, dt)
 
     def handle_keypresses(self, keys):
         """

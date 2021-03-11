@@ -7,6 +7,9 @@ import pygame
 # Tilesize of the map
 TILESIZE: int = 16
 
+# FPS of the game
+FPS: int = 60
+
 
 class LevelStatus(Enum):
     Paused = (0,)

@@ -1,55 +1,31 @@
 from typing import Optional
 
 import pygame
-from jumpnrun.widgets import Label, XAlign, YAlign
-from jumpnrun.colors import BLACK, WHITE
+from jumpnrun.widgets import Label
+from jumpnrun.colors import BLACK
 
-class Button:
+class Button(Label):
     """
     a simple button
 
-    a small wrapper for a label
+    small wrapper for a label
     """
 
     def __init__(
         self,
-        caption: str,
-        x: float,
-        y: float,
-        width: float = 0.15,
-        height: float = 0.1,
-        textsize: float = 0.24,
-        font_file: str = "assets/fonts/carobtn.TTF",
-        color: pygame.Color = WHITE,
-        bg_color: pygame.Color = BLACK,
         hover_color: Optional[pygame.Color] = None,
-        xalign: XAlign = XAlign.CENTER,
-        yalign: YAlign = YAlign.CENTER,
+        **kwargs
     ):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.bg_color = bg_color
-        if hover_color:
+        super().__init__(**kwargs)
+        if bg_color := kwargs.get("bg_color"):
+            self._bg_color = bg_color
+        else:
+            self._bg_color = BLACK
+        if hover_color := kwargs.get("hover_color"):
             self.hover_color = hover_color
         else:
             # generate a lighter version of the bg_color as hover_color
-            self.hover_color = bg_color + pygame.Color(30, 30, 30)
-        # create the label of the content
-        self.label = Label(
-            caption=caption,
-            x=self.x,
-            y=self.y,
-            width=self.width,
-            height=self.height,
-            font_file=font_file,
-            textsize=textsize,
-            color=color,
-            bg_color=bg_color,
-            xalign=xalign,
-            yalign=yalign,
-        )
+            self.hover_color = self._bg_color + pygame.Color(30, 30, 30)
 
     def render(self, out_surface: pygame.Surface):
         """
@@ -59,10 +35,10 @@ class Button:
         if self.check_on(out_surface):
             bg_color = self.hover_color
         else:
-            bg_color = self.bg_color
-        self.label.set_bg_color(bg_color)
+            bg_color = self._bg_color
+        super().set_bg_color(bg_color)
         # render the label
-        self.label.render(out_surface)
+        super().render(out_surface)
 
     def check_on(self, surface: pygame.Surface) -> bool:
         """

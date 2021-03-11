@@ -12,6 +12,10 @@ def about_screen(surface: pygame.Surface, fps: int, clock: pygame.time.Clock):
     caption = ["Game by Akida"]
     with open("credits.md") as f:
         for line in f.readlines():
+            # remove the #
+            line = line.replace("#" , "")
+            # strip the newlines
+            line = line.strip()
             caption.append(line.strip())
     text = Label(
         caption="",
@@ -19,7 +23,7 @@ def about_screen(surface: pygame.Surface, fps: int, clock: pygame.time.Clock):
         y=0.1,
         width=0.9,
         height=0.7,
-        textsize=0.025,
+        textsize=2.25,
         yalign=YAlign.TOP
     )
     back_button = Button(
@@ -27,7 +31,6 @@ def about_screen(surface: pygame.Surface, fps: int, clock: pygame.time.Clock):
         x=0.325,
         y=0.85,
         width=0.35,
-        textsize=0.09,
     )
     line = 0
     ticks = 0

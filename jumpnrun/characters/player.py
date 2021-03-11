@@ -1,9 +1,9 @@
-from typing import List, Dict
+from typing import Dict, List
 
 import pygame
 
 from jumpnrun.map import Map
-from jumpnrun.utils import load_spritesheet, TILESIZE
+from jumpnrun.utils import FPS, TILESIZE, load_spritesheet
 
 
 class Player(pygame.sprite.Sprite):
@@ -61,12 +61,17 @@ class Player(pygame.sprite.Sprite):
             print(collision.rect, self.rect)
             self.alive = False
 
-    def apply_physics(self, map: Map):
+    def apply_physics(self, map: Map, dt: float):
         """
         apply physics to the player
 
+        dt - the time since the last call
+
         currently this includes gravity and collision
         """
+        # dt should be in seconds
+        # TODO fix dt
+        dt = dt / FPS
         # gravity
         if not self._check_down(map):
             self.acceleration[1] += 1
@@ -96,7 +101,7 @@ class Player(pygame.sprite.Sprite):
                 self.flip = True
             # character can move only half tiles
             # moves will be done partly so that collision is detected correctly
-            for _ in range(abs(round(v * 2))):
+            for _ in range(abs(round(v * 2 * dt))):
                 move(map, 0.5)
 
         # move the player vertically
@@ -107,7 +112,7 @@ class Player(pygame.sprite.Sprite):
                 move = self.move_down
             else:
                 move = self.move_up
-            for _ in range(abs(round(v * 2))):
+            for _ in range(abs(round(v * 2 * dt))):
                 move(map, 0.5)
 
         # because of air resistance the velocity in x direction is lowered

@@ -1,5 +1,3 @@
-from time import sleep
-
 import pygame
 
 from jumpnrun.utils import LevelStatus
@@ -18,21 +16,18 @@ def pause_screen(surface: pygame.Surface) -> LevelStatus:
         x=0.4,
         y=0.4,
         width=0.2,
-        textsize=0.16,
     )
     restart_button = Button(
         caption=t("Restart Level"),
         x=0.35,
         y=0.55,
         width=0.3,
-        textsize=0.12,
     )
     quit_button = Button(
         caption=t("Back to Title Screen"),
         x=0.325,
         y=0.7,
         width=0.35,
-        textsize=0.09,
     )
     while status == LevelStatus.Paused:
         for event in pygame.event.get():
@@ -45,7 +40,7 @@ def pause_screen(surface: pygame.Surface) -> LevelStatus:
                 if continue_button.check_on(surface):
                     status = LevelStatus.Running
                     # give the player some time to react
-                    sleep(0.5)
+                    pygame.time.wait(500)
                 # handle click of quit button
                 elif quit_button.check_on(surface):
                     status = LevelStatus.Quit

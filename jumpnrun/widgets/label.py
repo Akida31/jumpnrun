@@ -18,7 +18,7 @@ class Label:
         y: float,
         width: float = 0.15,
         height: float = 0.1,
-        textsize: float = 0.24,
+        textsize: float = 3,
         font_file: str = "assets/fonts/carobtn.TTF",
         color: pygame.Color = WHITE,
         bg_color: Optional[pygame.Color] = None,
@@ -32,7 +32,8 @@ class Label:
         self.width = width
         self.height = height
         self.font_file = font_file
-        self.textsize = textsize
+        # textsize is given in percent
+        self.textsize = textsize / 100
         self.color = color
         self.bg_color = bg_color
         self.xalign = xalign
@@ -69,16 +70,19 @@ class Label:
         # fill the background if there is one
         if self.bg_color:
             surface.fill(self.bg_color)
-        self._render_text(surface, width, height)
+        # calculate the fontsize
+        fontsize = round(self.textsize * out_surface.get_width())
+        self._render_text(surface, width, height, fontsize)
         # blit the temporary surface
         out_surface.blit(surface, (x, y))
 
-    def _render_text(self, out_surface: pygame.Surface, width: int, height: int):
+    def _render_text(self, out_surface: pygame.Surface, width: int, height: int,
+            fontsize: int):
         """
         render the text to the level surface
         """
-        if self._fontsize != (fontsize := int(self.textsize * width)):
-            # load the font and change it size with the window size
+        # if the window size changes, the fontsize will be changed aswell
+        if self._fontsize != fontsize: 
             self._fontsize = fontsize
             self._font = pygame.font.Font(self.font_file, fontsize)
         # get all lines of the text

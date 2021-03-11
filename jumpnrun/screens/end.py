@@ -30,21 +30,18 @@ def end_screen(
         x=0.25,
         y=0.2,
         width=0.5,
-        textsize=0.06,
     )
     next_button = Button(
         caption=t("Next Level"),
         x=0.375,
         y=0.45,
         width=0.25,
-        textsize=0.14,
     )
     back_button = Button(
         caption=t("Back to Title Screen"),
         x=0.325,
         y=0.6,
         width=0.35,
-        textsize=0.09,
     )
     image = pygame.image.load("assets/img/screenshot.png")
     while True:
