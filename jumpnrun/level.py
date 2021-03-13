@@ -6,9 +6,9 @@ from jumpnrun.characters.player import Player
 from jumpnrun.colors import BLACK
 from jumpnrun.map import Map
 from jumpnrun.objects import Sign, Spike, Star
-from jumpnrun.screens.pause import pause_screen
+from jumpnrun.screens.pause import PauseScreen
 from jumpnrun.translate import t
-from jumpnrun.utils import LevelStatus, quit_game, FPS
+from jumpnrun.utils import FPS, LevelStatus, quit_game
 from jumpnrun.widgets import Label, XAlign, YAlign
 
 
@@ -52,7 +52,9 @@ class Level:
         )
 
         # create the background image
-        self.background = pygame.image.load("assets/img/backgrounds/landscape.png")
+        self.background = pygame.image.load(
+            "assets/img/backgrounds/landscape.png"
+        )
 
         # set the framerate of the game
         self.clock = pygame.time.Clock()
@@ -70,7 +72,9 @@ class Level:
         # load the star hints
         self.star_hints: List[Star] = []
         for i in range(len(self.objects["stars"])):
-            self.star_hints.append(Star(["assets/img/star/shine/1.png"], 1+i, 2))
+            self.star_hints.append(
+                Star(["assets/img/star/shine/1.png"], 1 + i, 2)
+            )
         # load all signs
         signs: List[Sign] = self.map.get_signs()
         self.objects["signs"] = signs
@@ -86,25 +90,29 @@ class Level:
 
         returns the status of the end and the time which the game ran
         """
-        # the time between frames is not everytime the same so use the difference
-        dt: int = 1000
+        # the time between frames is not everytime the same
+        # so use the difference
+        dt: int = 0
         while self.status == LevelStatus.Running:
             # update the timer
             self.timer += dt
-            self.on_events()
-            self.apply_physics(dt)
-            self.player.interact(self.objects)
-            # check if the player is alive
-            if not self.player.alive:
-                self.status = LevelStatus.Restart
-                break
-            # if the player hit all stars end the level
-            if len(self.objects["stars"]) == 0:
-                self.status = LevelStatus.Finished
+            # if the dt is higher, apply everything multiple times
+            # the rendering is the cost intensive action
+            # so this will render only every 20 times
+            for _ in range(max(1, dt // 20)):
+                self.on_events()
+                self.apply_physics()
+                self.player.interact(self.objects)
+                # restart the level if the player is not alive anymore
+                if not self.player.alive:
+                    self.status = LevelStatus.Restart
+                    break
+                # if the player hit all stars end the level
+                if len(self.objects["stars"]) == 0:
+                    self.status = LevelStatus.Finished
             self.render()
             dt = self.clock.tick(FPS)
         return self.status, self.get_time()
-
 
     def get_time(self) -> float:
         """
@@ -151,7 +159,8 @@ class Level:
         self.player.render(surface)
         # render the background image
         self.surface.blit(
-            pygame.transform.scale(self.background, (self.width, self.height)), (0, 0)
+            pygame.transform.scale(self.background, (self.width, self.height)),
+            (0, 0),
         )
         # render the hint stars
         for i in range(len(self.objects["stars"])):
@@ -162,7 +171,7 @@ class Level:
         )
         # render the description of a sign if a player stands on one
         if collision := pygame.sprite.spritecollideany(
-                self.player, self.objects["signs"]
+            self.player, self.objects["signs"]
         ):
             self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)
@@ -172,16 +181,14 @@ class Level:
         self.time_label.render(self.surface)
         pygame.display.flip()
 
-    def apply_physics(self, dt: int):
+    def apply_physics(self):
         """
         apply physics to all objects
-
-        dt - the time since the last call
         """
         for group in self.objects:
             for element in self.objects[group]:
-                element.apply_physics(self.map, dt)
-        self.player.apply_physics(self.map, dt)
+                element.apply_physics(self.map)
+        self.player.apply_physics(self.map)
 
     def handle_keypresses(self, keys):
         """
@@ -191,7 +198,7 @@ class Level:
         if keys[pygame.K_q]:
             quit_game()
         if keys[pygame.K_ESCAPE]:
-            self.status = pause_screen(self.surface)
+            self.status = PauseScreen(self.surface).run()
         if keys[pygame.K_w]:
             self.player.jump(self.map)
         if keys[pygame.K_a]:

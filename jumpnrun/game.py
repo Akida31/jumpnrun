@@ -2,7 +2,7 @@ from typing import List
 
 import pygame
 
-from jumpnrun.screens.main import main_screen
+from jumpnrun.screens.main import MainScreen
 from jumpnrun.translate import Language, t
 
 # FPS dont have to be so high for an UI
@@ -43,4 +43,4 @@ class Game:
         """
         run the game
         """
-        main_screen(self.surface, FPS, self.clock, self.levels)
+        MainScreen(self.surface, self.levels).run()

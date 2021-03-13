@@ -2,57 +2,64 @@ import pygame
 
 from jumpnrun.utils import LevelStatus
 from jumpnrun.translate import t
-from jumpnrun.utils import quit_game
 from jumpnrun.widgets import Button
+from jumpnrun.screens import Screen
 
 
-def pause_screen(surface: pygame.Surface) -> LevelStatus:
+class PauseScreen(Screen):
     """
     pause screen in the level
     """
-    status = LevelStatus.Paused
-    continue_button = Button(
-        caption=t("Continue"),
-        x=0.4,
-        y=0.4,
-        width=0.2,
-    )
-    restart_button = Button(
-        caption=t("Restart Level"),
-        x=0.35,
-        y=0.55,
-        width=0.3,
-    )
-    quit_button = Button(
-        caption=t("Back to Title Screen"),
-        x=0.325,
-        y=0.7,
-        width=0.35,
-    )
-    while status == LevelStatus.Paused:
-        for event in pygame.event.get():
-            # close the program if the window should be closed
-            if event.type == pygame.QUIT:
-                quit_game()
-            # handle click
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                # handle click of continue button
-                if continue_button.check_on(surface):
-                    status = LevelStatus.Running
-                    # give the player some time to react
-                    pygame.time.wait(500)
-                # handle click of quit button
-                elif quit_button.check_on(surface):
-                    status = LevelStatus.Quit
-                # handle click of restart button
-                elif restart_button.check_on(surface):
-                    status = LevelStatus.Restart
-        # render the continue button
-        continue_button.render(surface)
-        # render the restart button
-        restart_button.render(surface)
-        # render the quit button
-        quit_button.render(surface)
-        # update the screen
-        pygame.display.flip()
-    return status
+
+    def __init__(self, surface: pygame.Surface):
+        super().__init__(surface, background_image=True)
+        self.status = LevelStatus.Paused
+        self.add_button(
+            Button(
+                caption=t("Continue"),
+                x=0.4,
+                y=0.4,
+                width=0.2,
+            ),
+            self.continue_handler,
+        )
+        self.add_button(
+            Button(
+                caption=t("Restart Level"),
+                x=0.35,
+                y=0.55,
+                width=0.3,
+            ),
+            self.restart_handler,
+        )
+        self.add_button(
+            Button(
+                caption=t("Back to Title Screen"),
+                x=0.325,
+                y=0.85,
+                width=0.35,
+            ),
+            self.quit_handler,
+        )
+
+    def set_status(self, status: LevelStatus):
+        """
+        set the levelstatus
+        """
+        self.status = status
+        self.running = status == LevelStatus.Paused
+
+    def run(self) -> LevelStatus:
+        super().run()
+        return self.status
+
+    def continue_handler(self):
+        self.set_status(LevelStatus.Running)
+        # give the player some time to react
+        pygame.time.wait(500)
+
+    def restart_handler(self):
+        self.set_status(LevelStatus.Restart)
+
+    def quit_handler(self):
+        self.set_status(LevelStatus.Quit)

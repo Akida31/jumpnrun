@@ -76,13 +76,18 @@ class Label:
         # blit the temporary surface
         out_surface.blit(surface, (x, y))
 
-    def _render_text(self, out_surface: pygame.Surface, width: int, height: int,
-            fontsize: int):
+    def _render_text(
+        self,
+        out_surface: pygame.Surface,
+        width: int,
+        height: int,
+        fontsize: int,
+    ):
         """
         render the text to the level surface
         """
         # if the window size changes, the fontsize will be changed aswell
-        if self._fontsize != fontsize: 
+        if self._fontsize != fontsize:
             self._fontsize = fontsize
             self._font = pygame.font.Font(self.font_file, fontsize)
         # get all lines of the text

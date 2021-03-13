@@ -1,61 +1,55 @@
 import pygame
 
 from jumpnrun.translate import t
-from jumpnrun.utils import quit_game
 from jumpnrun.widgets import Button, Label, YAlign
+from jumpnrun.screens import Screen
 
 
-def about_screen(surface: pygame.Surface, fps: int, clock: pygame.time.Clock):
+class AboutScreen(Screen):
     """
     the screen showing additional information about the game
     """
-    caption = ["Game by Akida"]
-    with open("credits.md") as f:
-        for line in f.readlines():
-            # remove the #
-            line = line.replace("#" , "")
-            # strip the newlines
-            line = line.strip()
-            caption.append(line.strip())
-    text = Label(
-        caption="",
-        x=0.05,
-        y=0.1,
-        width=0.9,
-        height=0.7,
-        textsize=2.25,
-        yalign=YAlign.TOP
-    )
-    back_button = Button(
-        caption=t("Back to Title Screen"),
-        x=0.325,
-        y=0.85,
-        width=0.35,
-    )
-    line = 0
-    ticks = 0
-    while True:
-        for event in pygame.event.get():
-            # close the program if the window should be closed
-            if event.type == pygame.QUIT:
-                quit_game()
-            # handle click
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                # handle click of back button
-                if back_button.check_on(surface):
-                    return
+
+    def __init__(self, surface: pygame.Surface):
+        super().__init__(surface)
+        self.caption = ["Game by Akida"]
+        with open("credits.md") as f:
+            for line in f.readlines():
+                # remove the #
+                line = line.replace("#", "")
+                # strip the newlines
+                line = line.strip()
+                self.caption.append(line.strip())
+        self.text = Label(
+            caption="",
+            x=0.05,
+            y=0.1,
+            width=0.9,
+            height=0.7,
+            textsize=2.25,
+            yalign=YAlign.TOP,
+        )
+        self.add_label(self.text)
+        self.add_button(
+            Button(
+                caption=t("Back to Title Screen"),
+                x=0.325,
+                y=0.85,
+                width=0.35,
+            ),
+            self.back_handler,
+        )
+        self.line = 0
+        self.ticks = 0
+
+    def render(self):
         # fill background with complete black
-        surface.fill(pygame.Color(0, 0, 0))
+        self.surface.fill(pygame.Color(0, 0, 0))
         # set the right text
-        text.set_caption("\n".join(caption[line:line+9]))
-        # render the text
-        text.render(surface)
-        # render the back button
-        back_button.render(surface)
-        # update the screen
-        pygame.display.flip()
-        clock.tick(fps)
-        if ticks == fps:
-            ticks = 0
-            line += 1
-        ticks += 1
+        line = self.ticks // 30
+        self.text.set_caption("\n".join(self.caption[line : line + 9]))
+        super().render()
+        self.ticks += 1
+
+    def back_handler(self):
+        self.running = False

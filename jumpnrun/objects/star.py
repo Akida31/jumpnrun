@@ -5,7 +5,7 @@ import pygame
 from jumpnrun.utils import TILESIZE
 
 # the waiting time before the image gets changed
-WAITING_TIME: int = 10
+WAITING_TIME: int = 7
 
 
 class Star(pygame.sprite.Sprite):

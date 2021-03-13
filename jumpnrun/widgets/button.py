@@ -4,6 +4,7 @@ import pygame
 from jumpnrun.widgets import Label
 from jumpnrun.colors import BLACK
 
+
 class Button(Label):
     """
     a simple button
@@ -11,11 +12,7 @@ class Button(Label):
     small wrapper for a label
     """
 
-    def __init__(
-        self,
-        hover_color: Optional[pygame.Color] = None,
-        **kwargs
-    ):
+    def __init__(self, hover_color: Optional[pygame.Color] = None, **kwargs):
         super().__init__(**kwargs)
         if bg_color := kwargs.get("bg_color"):
             self._bg_color = bg_color

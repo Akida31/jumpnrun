@@ -28,13 +28,13 @@ def quit_game():
 
 
 def load_spritesheet(
-        filename: str,
-        tile_width: int,
-        tile_height: Optional[int] = None,
-        offset_x: int = 0,
-        offset_y: int = 0,
-        spacing_x: int = 0,
-        spacing_y: int = 0,
+    filename: str,
+    tile_width: int,
+    tile_height: Optional[int] = None,
+    offset_x: int = 0,
+    offset_y: int = 0,
+    spacing_x: int = 0,
+    spacing_y: int = 0,
 ) -> List[List[pygame.Surface]]:
     """
     load a spritesheet from a given file

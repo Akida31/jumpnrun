@@ -3,7 +3,10 @@ from typing import Dict, List
 import pygame
 
 from jumpnrun.map import Map
-from jumpnrun.utils import FPS, TILESIZE, load_spritesheet
+from jumpnrun.utils import TILESIZE, load_spritesheet
+
+
+MOVESPEED: float = 2
 
 
 class Player(pygame.sprite.Sprite):
@@ -11,7 +14,8 @@ class Player(pygame.sprite.Sprite):
         """
         the class of the player
 
-        sprite_filename: the file from which the sprite shown on the screen should be loaded
+        sprite_filename: the file from which the sprite shown on the screen
+            should be loaded
         x, y: the initial tileposition of the player
         """
         # initialize the Sprite class
@@ -19,7 +23,8 @@ class Player(pygame.sprite.Sprite):
         # x and y are tile position and have to be multiplied with the tilesize
         self.x: float = x * TILESIZE
         self.y: float = y * TILESIZE
-        # size of the player is manually inserted because the character file was adjusted for that
+        # size of the player is manually inserted
+        # because the character file was adjusted for that
         self.width = 16
         self.height = 24
         # load all sprites from the file
@@ -28,8 +33,6 @@ class Player(pygame.sprite.Sprite):
         )
         # the initial sprite
         self.sprite = self.spritesheet[8][2]
-        # for applying gravity we need to save velocity and acceleration of the player
-        self.acceleration: List[float] = [0, 0]
         self.velocity: List[float] = [0, 0]
         self.flip = False  # the direction of the sprite image
         self.alive = True
@@ -57,34 +60,24 @@ class Player(pygame.sprite.Sprite):
         if collision := pygame.sprite.spritecollideany(self, objects["stars"]):
             objects["stars"].remove(collision)
         # check collision with spikes
-        if collision := pygame.sprite.spritecollideany(self, objects["spikes"]):
+        if collision := pygame.sprite.spritecollideany(
+            self, objects["spikes"]
+        ):
             print(collision.rect, self.rect)
             self.alive = False
 
-    def apply_physics(self, map: Map, dt: float):
+    def apply_physics(self, map: Map):
         """
         apply physics to the player
 
-        dt - the time since the last call
-
         currently this includes gravity and collision
         """
-        # dt should be in seconds
-        # TODO fix dt
-        dt = dt / FPS
         # gravity
         if not self._check_down(map):
-            self.acceleration[1] += 1
+            self.velocity[1] += 1
         else:
             # if the player is on ground the velocity will be reset
-            self.velocity[1] = 0
-
-        # apply acceleration to velocity
-        self.velocity[0] += self.acceleration[0]
-        self.velocity[1] += self.acceleration[1]
-
-        # reset acceleration
-        self.acceleration = [0, 0]
+            self.velocity[1] = min(0, self.velocity[1])
 
         # move the player horizontally
         if (v := self.velocity[0]) != 0:
@@ -101,7 +94,7 @@ class Player(pygame.sprite.Sprite):
                 self.flip = True
             # character can move only half tiles
             # moves will be done partly so that collision is detected correctly
-            for _ in range(abs(round(v * 2 * dt))):
+            for _ in range(abs(round(v * 2))):
                 move(map, 0.5)
 
         # move the player vertically
@@ -112,14 +105,14 @@ class Player(pygame.sprite.Sprite):
                 move = self.move_down
             else:
                 move = self.move_up
-            for _ in range(abs(round(v * 2 * dt))):
+            for _ in range(abs(round(v * 2))):
                 move(map, 0.5)
 
-        # because of air resistance the velocity in x direction is lowered
+        # because of resistance the velocity in x direction is lowered
         if self.velocity[0] > 0:
-            self.velocity[0] -= 2
+            self.velocity[0] -= max(self.velocity[0], MOVESPEED)
         elif self.velocity[0] < 0:
-            self.velocity[0] += 2
+            self.velocity[0] -= min(self.velocity[0], -MOVESPEED)
 
         # the player shouldn't be alive if he falls off the screen
         if self.y >= map.get_size()[1]:
@@ -130,19 +123,19 @@ class Player(pygame.sprite.Sprite):
         the player jumps if nothing is above him
         """
         if self._check_down(map):
-            self.acceleration[1] -= 9
+            self.velocity[1] -= 9
 
     def go_left(self, _: Map):
         """
         the player goes left
         """
-        self.acceleration[0] = -2
+        self.velocity[0] = -MOVESPEED
 
     def go_right(self, _: Map):
         """
         the player goes right
         """
-        self.acceleration[0] = 2
+        self.velocity[0] = MOVESPEED
 
     def move_up(self, map: Map, dy: float):
         """

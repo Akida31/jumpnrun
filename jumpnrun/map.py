@@ -48,7 +48,9 @@ class Map:
         """
         # load the imgs for the stars
         star_dir: str = "assets/img/star/shine/"
-        starfiles: List[str] = list(map(lambda i: f"{star_dir}{i}", listdir(star_dir)))
+        starfiles: List[str] = list(
+            map(lambda i: f"{star_dir}{i}", listdir(star_dir))
+        )
         # load the star layer
         layer = self.tmx.get_layer_by_name("Stars")
         # create an empty list for all stars
@@ -102,7 +104,9 @@ class Map:
             layer = self.tmx.layers[layer]
             for x, y, image in layer.tiles():
                 # show each tile of the map with the real position now
-                surface.blit(image, (x * self.tmx.tilewidth, y * self.tmx.tileheight))
+                surface.blit(
+                    image, (x * self.tmx.tilewidth, y * self.tmx.tileheight)
+                )
 
     def check_collide(self, x: float, y: float) -> bool:
         """
