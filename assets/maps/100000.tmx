@@ -28,7 +28,7 @@
   <object id="18" gid="139" x="256" y="192" width="16" height="12"/>
  </objectgroup>
  <objectgroup id="5" name="Signs">
-  <object id="16" name="asdf" gid="15" x="144" y="192" width="16" height="16">
+  <object id="16" gid="15" x="144" y="192" width="16" height="16">
    <properties>
     <property name="description" value="hint1"/>
    </properties>

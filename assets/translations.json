@@ -1,0 +1,24 @@
+{
+    "EN": {
+        "hint1": "Press \"a\" to move left and \"d\" to move right.\nCollect the coin!",
+        "hint2": "You can jump with \"w\"!",
+        "hint3": "You have to collect all coins to complete the level.\nIn the top left corner there is a display of all your missing coins",
+        "hint4": "If you want to restart or leave the level press \"Esc\""
+    },
+    "DE": {
+        "Quit Game": "Spiel beenden",
+        "Continue": "Fortfahren",
+        "Play": "Spielen",
+        "About Game": "Über das Spiel",
+        "Restart Level": "Level neustarten",
+        "Completed Level #x in #ts": "Level #x in #ts beendet",
+        "Back to Title Screen": "Zurück zum Hauptmenü",
+        "Time": "Zeit",
+        "Next Level": "Nächstes Level",
+        "hint1": "Drücke \"a\" um dich nach links zu bewegen\nund \"d\" um dich nach rechts zu bewegen.\nSammle die Münze!",
+        "hint2": "Du kannst mit \"w\" springen!",
+        "hint3": "Du musst alle Münzen sammeln,\num das Level abzuschließen.\nOben links siehst du, wie viele Münzen noch fehlen",
+        "hint4": "Wenn du das Level neustarten oder beenden willst, drücke \"Esc\""
+    }
+}
+

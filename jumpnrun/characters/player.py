@@ -4,7 +4,7 @@ import pygame
 
 from jumpnrun.map import Map
 from jumpnrun.utils import TILESIZE, load_spritesheet
-
+from jumpnrun.sound import play_sound
 
 MOVESPEED: float = 2
 
@@ -59,11 +59,11 @@ class Player(pygame.sprite.Sprite):
         # check collision with stars
         if collision := pygame.sprite.spritecollideany(self, objects["stars"]):
             objects["stars"].remove(collision)
+            play_sound("coin.ogg")
         # check collision with spikes
         if collision := pygame.sprite.spritecollideany(
             self, objects["spikes"]
         ):
-            print(collision.rect, self.rect)
             self.alive = False
 
     def apply_physics(self, map: Map):
@@ -177,30 +177,38 @@ class Player(pygame.sprite.Sprite):
         """
         check for collision on the upper side of the player
         """
-        return map.check_collide(
-            self.x / TILESIZE + 0.75, self.y / TILESIZE
-        ) or map.check_collide(self.x / TILESIZE, self.y / TILESIZE)
+        self.y -= 0.5
+        collision = pygame.sprite.spritecollideany(self, map.colliders)
+        self.y += 0.5
+        return collision is not None
 
     def _check_down(self, map: Map) -> bool:
         """
         check for collision on the bottom side of the player
         """
-        return map.check_collide(
-            self.x / TILESIZE + 0.5, self.y / TILESIZE + 1.5
-        ) or map.check_collide(self.x / TILESIZE, self.y / TILESIZE + 1.5)
+        self.y += 0.5
+        collision = pygame.sprite.spritecollideany(self, map.colliders)
+        self.y -= 0.5
+        return collision is not None
 
     def _check_left(self, map: Map) -> bool:
         """
         check for collision on the left side of the player
         """
-        return map.check_collide(
-            self.x / TILESIZE - 0.5, self.y / TILESIZE
-        ) or map.check_collide(self.x / TILESIZE - 0.5, self.y / TILESIZE + 1)
+        if self.x <= 0:
+            return True
+        self.x -= 0.5
+        collision = pygame.sprite.spritecollideany(self, map.colliders)
+        self.x += 0.5
+        return collision is not None
 
     def _check_right(self, map: Map) -> bool:
         """
         check for collision on the right side of the player
         """
-        return map.check_collide(
-            self.x / TILESIZE + 1, self.y / TILESIZE
-        ) or map.check_collide(self.x / TILESIZE + 1, self.y / TILESIZE + 1)
+        if self.x >= map.size[0] - self.width:
+            return True
+        self.x += 0.5
+        collision = pygame.sprite.spritecollideany(self, map.colliders)
+        self.x -= 0.5
+        return collision is not None

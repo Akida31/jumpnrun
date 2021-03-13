@@ -8,19 +8,35 @@
             "scaleInDock": 1
         },
         "0.tmx": {
-            "scale": 3,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 240,
-                "y": 119.83333333333334
+                "x": 246.33333333333331,
+                "y": 175.66666666666666
             }
         },
         "1.tmx": {
-            "scale": 2.0662499999999997,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.56442831215975,
-                "y": 120.26618269812464
+                "x": 299.5,
+                "y": 81.5
+            }
+        },
+        "2.tmx": {
+            "scale": 1.5536458333333334,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 240.4022795843111,
+                "y": 120.0402279584311
+            }
+        },
+        "3.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 233.66666666666666,
+                "y": 227
             }
         },
         "characters.tsx": {
@@ -50,19 +66,19 @@
             "scaleInEditor": 4
         },
         "template.tmx": {
-            "scale": 2.0027,
+            "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.6764368103061,
-                "y": 120.08788136016378
+                "x": 233.66666666666666,
+                "y": 138.33333333333331
             }
         },
         "test.tmx": {
-            "scale": 1.5686,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 437.97016447787837,
-                "y": 270.9422414892261
+                "x": 272.5,
+                "y": 101.5
             }
         }
     },

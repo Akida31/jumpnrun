@@ -19,3 +19,5 @@
 (Fantasy Choir by Cesar da Rocha)[https://opengameart.org/users/cesisco]
 
 ## Sounds
+(Fantasy Sound effects by Little Robot Sound Factory)[www.littlerobotsoundfactory.com]
+(13 Sounds by wobbleboxx)[http://wobbleboxx.com]

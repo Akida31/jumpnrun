@@ -1,4 +1,6 @@
 from typing import List
+from os import path
+from jumpnrun.config import DATA_DIR, MUTED, MUSIC_VOLUME
 
 import pygame
 
@@ -50,10 +52,14 @@ class MainScreen(Screen):
             quit_game,
         )
         self.levels = levels
-        # load the music
-        pygame.mixer.music.load("assets/music/Lonely_Witch.ogg")
-        # play the music in a loop and fade it in
-        pygame.mixer.music.play(loops=-1, fade_ms=500)
+        if not MUTED:
+            # load the music
+            pygame.mixer.music.load(
+                path.join(DATA_DIR, "music", "Lonely_Witch.ogg")
+            )
+            pygame.mixer.music.set_volume(MUSIC_VOLUME)
+            # play the music in a loop and fade it in
+            pygame.mixer.music.play(loops=-1, fade_ms=500)
 
     def start_handler(self):
         LevelScreen(self.surface, self.levels).run()

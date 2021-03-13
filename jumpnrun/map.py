@@ -1,10 +1,26 @@
-from os import listdir
 from typing import Tuple, List
 
-from pygame import Surface
+import pygame
 from pytmx.util_pygame import load_pygame
 
 from jumpnrun.objects import Sign, Spike, Star
+
+
+class Tile(pygame.sprite.Sprite):
+    """
+    basic class for all collidable Tiles
+    """
+
+    def __init__(self, x: int, y: int, width: int, height: int):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    @property
+    def rect(self) -> pygame.Rect:
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
 
 class Map:
@@ -20,6 +36,22 @@ class Map:
             self.tmx.width * self.tmx.tilewidth,
             self.tmx.height * self.tmx.tileheight,
         )
+        # create a group for map colliders
+        self.colliders: pygame.sprite.Group = pygame.sprite.Group()
+        for layer_nr in self.tmx.visible_tile_layers:
+            # if not loaded like this, also object layers will be here
+            layer = self.tmx.layers[layer_nr]
+            for x, y, _ in layer.tiles():
+                # check each tile of the map if it is a collider
+                properties = self.tmx.get_tile_properties(x, y, layer_nr)
+                if properties and "colliders" in properties:
+                    sprite = Tile(
+                        x * self.tmx.tilewidth,
+                        y * self.tmx.tileheight,
+                        self.tmx.tilewidth,
+                        self.tmx.tileheight,
+                    )
+                    self.colliders.add(sprite)
 
     def get_size(self) -> Tuple[int, int]:
         """
@@ -46,11 +78,6 @@ class Map:
         """
         get all stars
         """
-        # load the imgs for the stars
-        star_dir: str = "assets/img/star/shine/"
-        starfiles: List[str] = list(
-            map(lambda i: f"{star_dir}{i}", listdir(star_dir))
-        )
         # load the star layer
         layer = self.tmx.get_layer_by_name("Stars")
         # create an empty list for all stars
@@ -60,7 +87,7 @@ class Map:
         for star in layer:
             x = star.x // self.tmx.tilewidth
             y = star.y // self.tmx.tileheight
-            stars.append(Star(starfiles, x, y))
+            stars.append(Star(x, y))
         return stars
 
     def get_signs(self) -> List[Sign]:
@@ -92,7 +119,7 @@ class Map:
             spikes.append(Spike(x, y, width, height, spike.image))
         return spikes
 
-    def render(self, surface: Surface):
+    def render(self, surface: pygame.Surface):
         """
         render the map to the given surface
         """
@@ -107,23 +134,3 @@ class Map:
                 surface.blit(
                     image, (x * self.tmx.tilewidth, y * self.tmx.tileheight)
                 )
-
-    def check_collide(self, x: float, y: float) -> bool:
-        """
-        check if a field has a collision
-
-        there is also collision with the vertical borders of the screen
-        """
-        # check if the field is outside of the screen
-        if x < 0 or x >= self.tmx.width:
-            return True
-        # there shouldn't be a collision with the horizontal borders
-        # but pytmx throws an exception if a tile outside the layer is accessed
-        if y < 0 or y >= self.tmx.height:
-            return False
-        for layer in self.tmx.visible_tile_layers:
-            # check each tile of the map if it is a collider
-            properties = self.tmx.get_tile_properties(x, y, layer)
-            if properties and "colliders" in properties:
-                return True
-        return False

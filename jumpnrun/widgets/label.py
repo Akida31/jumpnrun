@@ -1,9 +1,10 @@
 from typing import Optional
-
+from os import path
 import pygame
 
 from jumpnrun.widgets import XAlign, YAlign
 from jumpnrun.colors import WHITE
+from jumpnrun.config import DATA_DIR
 
 
 class Label:
@@ -19,7 +20,7 @@ class Label:
         width: float = 0.15,
         height: float = 0.1,
         textsize: float = 3,
-        font_file: str = "assets/fonts/carobtn.TTF",
+        font_file: str = path.join(DATA_DIR, "fonts", "carobtn.TTF"),
         color: pygame.Color = WHITE,
         bg_color: Optional[pygame.Color] = None,
         xalign: XAlign = XAlign.CENTER,

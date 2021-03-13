@@ -1,8 +1,12 @@
 from enum import Enum
+from typing import Dict
+from json import load
+from jumpnrun import config
+from os import path
 
 
 class Language(Enum):
-    DE = ("DE",)
+    DE = "DE"
     EN = "EN"
 
 
@@ -16,6 +20,7 @@ class Translator:
         create a translator
         """
         self.language = language
+        self.translations = load_translations()
 
     def change_language(self, language: Language):
         """
@@ -36,31 +41,19 @@ class Translator:
         translate the given text
         """
         # return the translation if there is one
-        if translation := translations[self.language.name].get(text):
+        if translation := self.translations[self.language.name].get(text):
             return translation
         # return the input back
         return text
 
 
+def load_translations() -> Dict:
+    """
+    load the translations from its json file
+    """
+    with open(path.join(config.DATA_DIR, "translations.json")) as f:
+        return load(f)
+
+
 # create a global translator
 t = Translator()
-
-translations = {
-    "EN": {
-        "hint1": 'Press "a" to move left and "d" to move right.\nCollect the coin!',
-        "hint2": 'You can jump with "w"!',
-    },
-    "DE": {
-        "Quit Game": "Spiel beenden",
-        "Continue": "Fortfahren",
-        "Play": "Spielen",
-        "About Game": "Über das Spiel",
-        "Restart Level": "Level neustarten",
-        "Completed Level #x in #ts": "Level #x in #ts beendet",
-        "Back to Title Screen": "Zurück zum Hauptmenü",
-        "Time": "Zeit",
-        "Next Level": "Nächstes Level",
-        "hint1": 'Drücke "a" um dich nach links zu bewegen\nund "d" um dich nach rechts zu bewegen.\nSammle die Münze!',
-        "hint2": 'Du kannst mit "w" springen!',
-    },
-}

@@ -1,4 +1,6 @@
 from typing import List
+from os import path, listdir
+from jumpnrun.config import DATA_DIR
 
 import pygame
 
@@ -9,7 +11,7 @@ WAITING_TIME: int = 7
 
 
 class Star(pygame.sprite.Sprite):
-    def __init__(self, sprite_filenames: List[str], x: int, y: int):
+    def __init__(self, x: int, y: int):
         # init the Sprite class
         super().__init__()
         # compute the real x and y position
@@ -19,7 +21,7 @@ class Star(pygame.sprite.Sprite):
         self.iter_state: int = 0
         # load the different images for the star
         self.images: List[pygame.Surface] = []
-        for filename in sprite_filenames:
+        for filename in load_starfiles():
             image = pygame.image.load(filename)
             # scale the image to the tilesize
             image = pygame.transform.scale(image, (TILESIZE, TILESIZE))
@@ -55,3 +57,17 @@ class Star(pygame.sprite.Sprite):
         take any arguments given so this won't create effort later
         """
         pass
+
+
+def load_starfiles() -> List[str]:
+    """
+    load all the files of the star
+    """
+    # load the imgs for the stars
+    star_dir: str = path.join(DATA_DIR, "img", "star", "shine")
+    starfiles: List[str] = list(
+        map(lambda i: path.join(star_dir, i), listdir(star_dir))
+    )
+    # sort the files
+    starfiles.sort()
+    return starfiles

@@ -25,7 +25,7 @@
  </objectgroup>
  <objectgroup id="6" name="Spikes"/>
  <objectgroup id="5" name="Signs">
-  <object id="21" name="start sign" gid="15" x="16" y="192" width="16" height="16">
+  <object id="21" gid="15" x="16" y="192" width="16" height="16">
    <properties>
     <property name="description" value="hint1"/>
    </properties>

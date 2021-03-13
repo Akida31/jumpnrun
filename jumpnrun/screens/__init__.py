@@ -1,9 +1,10 @@
 from typing import Callable, Dict, List, Optional
-
+from os import path
 import pygame
 
 from jumpnrun.utils import quit_game
 from jumpnrun.widgets import Button, Label
+from jumpnrun.config import DATA_DIR
 
 FPS: int = 30
 
@@ -19,7 +20,9 @@ class Screen:
         self.running = True
         self.image: Optional[pygame.Surface] = None
         if background_image:
-            self.image = pygame.image.load("assets/img/screenshot.png")
+            self.image = pygame.image.load(
+                path.join(DATA_DIR, "img", "screenshot.png")
+            )
 
     def add_label(self, label: Label):
         """

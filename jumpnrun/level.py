@@ -1,5 +1,5 @@
 from typing import Dict, List, Tuple
-
+from os import path
 import pygame
 
 from jumpnrun.characters.player import Player
@@ -10,6 +10,8 @@ from jumpnrun.screens.pause import PauseScreen
 from jumpnrun.translate import t
 from jumpnrun.utils import FPS, LevelStatus, quit_game
 from jumpnrun.widgets import Label, XAlign, YAlign
+from jumpnrun.config import DATA_DIR
+from jumpnrun.sound import play_sound
 
 
 class Level:
@@ -32,7 +34,6 @@ class Level:
             y=0.01,
             width=0.25,
             height=0.1,
-            font_file="assets/fonts/carobtn.TTF",
             color=BLACK,
             xalign=XAlign.LEFT,
         )
@@ -40,11 +41,10 @@ class Level:
         # create a label for the description of signs
         self.sign_label = Label(
             caption="",
-            x=0.2,
+            x=0.15,
             y=0.05,
-            width=0.6,
-            height=0.4,
-            font_file="assets/fonts/carobtn.TTF",
+            width=0.75,
+            height=0.5,
             textsize=2.5,
             color=BLACK,
             bg_color=None,
@@ -53,7 +53,7 @@ class Level:
 
         # create the background image
         self.background = pygame.image.load(
-            "assets/img/backgrounds/landscape.png"
+            path.join(DATA_DIR, "img", "backgrounds", "landscape.png")
         )
 
         # set the framerate of the game
@@ -63,7 +63,9 @@ class Level:
         # load player position
         (player_x, player_y) = self.map.get_player_position()
         # create a new player
-        self.player = Player("assets/img/characters2.png", player_x, player_y)
+        self.player = Player(
+            path.join(DATA_DIR, "img", "characters2.png"), player_x, player_y
+        )
 
         self.objects: Dict[str, List] = {}
         # load the position of the stars
@@ -72,9 +74,7 @@ class Level:
         # load the star hints
         self.star_hints: List[Star] = []
         for i in range(len(self.objects["stars"])):
-            self.star_hints.append(
-                Star(["assets/img/star/shine/1.png"], 1 + i, 2)
-            )
+            self.star_hints.append(Star(1 + i, 2))
         # load all signs
         signs: List[Sign] = self.map.get_signs()
         self.objects["signs"] = signs
@@ -106,12 +106,15 @@ class Level:
                 # restart the level if the player is not alive anymore
                 if not self.player.alive:
                     self.status = LevelStatus.Restart
+                    play_sound("jingle_lose.ogg", pause=True)
                     break
                 # if the player hit all stars end the level
                 if len(self.objects["stars"]) == 0:
                     self.status = LevelStatus.Finished
             self.render()
             dt = self.clock.tick(FPS)
+        if self.status == LevelStatus.Finished:
+            play_sound("jingle_win.ogg", pause=True)
         return self.status, self.get_time()
 
     def get_time(self) -> float:

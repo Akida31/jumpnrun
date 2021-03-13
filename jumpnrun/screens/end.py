@@ -12,7 +12,7 @@ class EndScreen(Screen):
         self,
         surface: pygame.Surface,
         level: int,
-        time: Optional[int],
+        time: Optional[float],
         levels: List[str],
     ):
         """
@@ -47,7 +47,7 @@ class EndScreen(Screen):
             Button(
                 caption=t("Back to Title Screen"),
                 x=0.325,
-                y=0.6,
+                y=0.85,
                 width=0.35,
             ),
             self.back_handler,
