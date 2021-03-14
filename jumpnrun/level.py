@@ -1,29 +1,60 @@
-from typing import Dict, List, Tuple
 from os import path
+import json
+from typing import Dict, List, Tuple
+
 import pygame
 
 from jumpnrun.characters.player import Player
 from jumpnrun.colors import BLACK
+from jumpnrun.config import DATA_DIR
 from jumpnrun.map import Map
 from jumpnrun.objects import Sign, Spike, Star
 from jumpnrun.screens.pause import PauseScreen
+from jumpnrun.sound import play_sound
 from jumpnrun.translate import t
 from jumpnrun.utils import FPS, LevelStatus, quit_game
 from jumpnrun.widgets import Label, XAlign, YAlign
-from jumpnrun.config import DATA_DIR
-from jumpnrun.sound import play_sound
+
+
+class LevelData:
+    """
+    a deserializer for the levels saved in the level file
+    """
+
+    name: str
+    filename: str
+    highscore: float
+    unlocked: bool
+
+    def __init__(self, json: Dict):
+        """
+        create a leveldata from the given json
+        """
+        self.name = json["name"]
+        self.filename = json["filename"]
+        self.highscore = json["highscore"]
+        self.unlocked = json["unlocked"]
+
+    def to_json(self) -> str:
+        return json.dumps(self.__dict__)
 
 
 class Level:
-    def __init__(self, level_file: str, surface: pygame.Surface):
+    def __init__(self, level_data: LevelData, surface: pygame.Surface):
         """
         initialize the level
-
-        level_file: the file from which the level should be loaded
-        surface: the surface on which should be drawn
         """
+        # if the level is not unlocked
+        # there is probably some cheating going on
+        if not level_data.unlocked:
+            print(
+                f"ERROR, Level {level_data.name} was not unlocked but started"
+            )
+            quit_game()
         # save the surface
         self.surface = surface
+        # save the level_data
+        self.level_data = level_data
         # save the dimensions of the surface
         (self.width, self.height) = self.surface.get_size()
 
@@ -59,7 +90,7 @@ class Level:
         # set the framerate of the game
         self.clock = pygame.time.Clock()
         # load the map
-        self.map = Map(level_file)
+        self.map = Map(path.join(DATA_DIR, "maps", self.level_data.filename))
         # load player position
         (player_x, player_y) = self.map.get_player_position()
         # create a new player

@@ -1,4 +1,3 @@
-from typing import List
 from os import path
 from jumpnrun.config import DATA_DIR, MUTED, MUSIC_VOLUME
 
@@ -13,7 +12,7 @@ from jumpnrun.screens.level import LevelScreen
 
 
 class MainScreen(Screen):
-    def __init__(self, surface: pygame.Surface, levels: List[str]):
+    def __init__(self, surface: pygame.Surface):
         super().__init__(surface, background_image=True)
         self.add_label(
             Label(
@@ -51,7 +50,6 @@ class MainScreen(Screen):
             ),
             quit_game,
         )
-        self.levels = levels
         if not MUTED:
             # load the music
             pygame.mixer.music.load(
@@ -62,7 +60,7 @@ class MainScreen(Screen):
             pygame.mixer.music.play(loops=-1, fade_ms=500)
 
     def start_handler(self):
-        LevelScreen(self.surface, self.levels).run()
+        LevelScreen(self.surface).run()
 
     def about_handler(self):
         AboutScreen(self.surface).run()

@@ -20,7 +20,7 @@ def play_sound(sound_file: str, pause: bool = False):
         length = sound.get_length()
         # delay the unpausing
         # a thread is necessary because else the full game would sleep
-        Thread(target=_unpause_music, args=[length]).start()
+        Thread(target=_unpause_music, args=[length], daemon=True).start()
 
 
 def _unpause_music(waiting_time: float):

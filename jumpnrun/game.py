@@ -1,9 +1,9 @@
 import pygame
+from os import path
 
+from jumpnrun.config import LANGUAGE, DATA_DIR
 from jumpnrun.screens.main import MainScreen
 from jumpnrun.translate import t
-from os import path, listdir
-from jumpnrun.config import DATA_DIR, LANGUAGE
 
 # FPS dont have to be so high for an UI
 # higher FPS increased the CPU usage massively
@@ -19,6 +19,9 @@ class Game:
         pygame.init()
         # set the title of the window
         pygame.display.set_caption("Jumpnrun")
+        # set the icon of the window
+        icon = pygame.image.load(path.join(DATA_DIR, "img", "icon.png"))
+        pygame.display.set_icon(icon)
         self.width: int = 1200
         self.height: int = 600
         # flags for the window
@@ -28,23 +31,6 @@ class Game:
         self.surface: pygame.Surface = pygame.display.set_mode(
             (self.width, self.height), flags=flags
         )
-        # location of all levels
-        map_dir = path.join(DATA_DIR, "maps")
-        # load all files from the maps directory
-        # which end with the tmx extension
-        levels = {}
-        self.levels = []
-        for f in listdir(map_dir):
-            (name, ext) = path.splitext(path.basename(f))
-            # the file should only be loaded if the name is right:
-            # a number followed by the extension ".tmx"
-            if ext != ".tmx" or not name.isnumeric():
-                continue
-            levels[name] = f
-
-        # sort the levels by their number and save their full path
-        for level in sorted(levels, key=int):
-            self.levels.append(path.join(map_dir, levels[level]))
         # set language
         t.change_language(LANGUAGE)
         # set the framerate of the game
@@ -54,4 +40,4 @@ class Game:
         """
         run the game
         """
-        MainScreen(self.surface, self.levels).run()
+        MainScreen(self.surface).run()

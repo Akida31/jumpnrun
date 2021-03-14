@@ -1,5 +1,5 @@
 {
-    "activeFile": "test.tmx",
+    "activeFile": "template.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -85,6 +85,8 @@
     "openFiles": [
         "0.tmx",
         "1.tmx",
+        "2.tmx",
+        "3.tmx",
         "test.tmx",
         "template.tmx"
     ],
@@ -92,8 +94,10 @@
     "recentFiles": [
         "0.tmx",
         "1.tmx",
-        "template.tmx",
+        "2.tmx",
+        "3.tmx",
         "test.tmx",
+        "template.tmx",
         "spikes.tsx",
         "swoosh.tsx",
         "sheet.tsx",

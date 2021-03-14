@@ -1,0 +1,32 @@
+[
+    {
+        "name": "1",
+        "filename": "0.tmx",
+        "highscore": 0.0,
+        "unlocked": true
+    },
+    {
+        "name": "2",
+        "filename": "1.tmx",
+        "highscore": 0.0,
+        "unlocked": false
+    },
+    {
+        "name": "3",
+        "filename": "2.tmx",
+        "highscore": 0.0,
+        "unlocked": false
+    },
+    {
+        "name": "4",
+        "filename": "3.tmx",
+        "highscore": 0.0,
+        "unlocked": false
+    },
+    {
+        "name": "Test",
+        "filename": "test.tmx",
+        "highscore": 0.0,
+        "unlocked": false
+    }
+]

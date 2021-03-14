@@ -1,8 +1,8 @@
-import os
+from os import path
 
 # the directory of the assets
-DATA_DIR: str = os.path.normpath(
-    os.path.join(os.path.dirname(__file__), "..", "assets")
+DATA_DIR: str = path.normpath(
+    path.join(path.dirname(__file__), "..", "assets")
 )
 
 from jumpnrun import translate
@@ -20,3 +20,8 @@ SOUND_VOLUME: float = 0.3
 # the volume of the music
 # 0.0 is minimal and 1.0 is maximal
 MUSIC_VOLUME: float = 0.5
+
+# file which contains the levels and its highscores
+# probably necessary to create a setting for that
+# if you insall the package in a directory without write permissions
+LEVEL_FILE: str = path.join(DATA_DIR, "levels.json")
