@@ -1,10 +1,10 @@
 from typing import List
 from os import path, listdir
-from jumpnrun.config import DATA_DIR
+from skyjump.config import DATA_DIR
 
 import pygame
 
-from jumpnrun.utils import TILESIZE
+from skyjump.utils import TILESIZE
 
 # the waiting time before the image gets changed
 WAITING_TIME: int = 7

@@ -4,16 +4,16 @@ from typing import Dict, List, Tuple
 
 import pygame
 
-from jumpnrun.characters.player import Player
-from jumpnrun.colors import BLACK
-from jumpnrun.config import DATA_DIR
-from jumpnrun.map import Map
-from jumpnrun.objects import Sign, Spike, Star
-from jumpnrun.screens.pause import PauseScreen
-from jumpnrun.sound import play_sound
-from jumpnrun.translate import t
-from jumpnrun.utils import FPS, LevelStatus, quit_game
-from jumpnrun.widgets import Label, XAlign, YAlign
+from skyjump.characters.player import Player
+from skyjump.colors import BLACK
+from skyjump.config import DATA_DIR
+from skyjump.map import Map
+from skyjump.objects import Sign, Spike, Star
+from skyjump.screens.pause import PauseScreen
+from skyjump.sound import play_sound
+from skyjump.translate import t
+from skyjump.utils import FPS, LevelStatus, quit_game
+from skyjump.widgets import Label, XAlign, YAlign
 
 
 class LevelData:

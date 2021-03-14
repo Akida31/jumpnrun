@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
 from json import load
-from jumpnrun import config
+from skyjump import config
 from os import path
 
 

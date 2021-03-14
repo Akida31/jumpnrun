@@ -1,8 +1,8 @@
 from typing import Optional
 
 import pygame
-from jumpnrun.widgets import Label
-from jumpnrun.colors import BLACK
+from skyjump.widgets import Label
+from skyjump.colors import BLACK
 
 
 class Button(Label):

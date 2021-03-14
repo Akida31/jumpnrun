@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python3 -m jumpnrun
+python3 -m skyjump

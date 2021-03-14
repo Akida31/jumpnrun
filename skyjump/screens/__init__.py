@@ -2,9 +2,9 @@ from typing import Callable, Dict, List, Optional
 from os import path
 import pygame
 
-from jumpnrun.utils import quit_game
-from jumpnrun.widgets import Button, Label
-from jumpnrun.config import DATA_DIR
+from skyjump.utils import quit_game
+from skyjump.widgets import Button, Label
+from skyjump.config import DATA_DIR
 
 FPS: int = 30
 

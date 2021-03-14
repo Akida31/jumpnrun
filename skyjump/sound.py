@@ -1,4 +1,4 @@
-from jumpnrun.config import MUTED, SOUND_VOLUME, DATA_DIR
+from skyjump.config import MUTED, SOUND_VOLUME, DATA_DIR
 import time
 import pygame
 from os import path

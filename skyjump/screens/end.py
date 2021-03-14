@@ -2,10 +2,10 @@ from typing import List, Optional
 
 import pygame
 
-from jumpnrun.translate import t
-from jumpnrun.widgets import Button, Label
-from jumpnrun.screens import Screen
-from jumpnrun.level import LevelData
+from skyjump.translate import t
+from skyjump.widgets import Button, Label
+from skyjump.screens import Screen
+from skyjump.level import LevelData
 
 
 class EndScreen(Screen):

@@ -1,14 +1,14 @@
 from os import path
-from jumpnrun.config import DATA_DIR, MUTED, MUSIC_VOLUME
+from skyjump.config import DATA_DIR, MUTED, MUSIC_VOLUME
 
 import pygame
 
-from jumpnrun.translate import t
-from jumpnrun.utils import quit_game
-from jumpnrun.widgets import Button, Label
-from jumpnrun.screens import Screen
-from jumpnrun.screens.about import AboutScreen
-from jumpnrun.screens.level import LevelScreen
+from skyjump.translate import t
+from skyjump.utils import quit_game
+from skyjump.widgets import Button, Label
+from skyjump.screens import Screen
+from skyjump.screens.about import AboutScreen
+from skyjump.screens.level import LevelScreen
 
 
 class MainScreen(Screen):
@@ -16,7 +16,7 @@ class MainScreen(Screen):
         super().__init__(surface, background_image=True)
         self.add_label(
             Label(
-                caption="Jumpnrun",
+                caption="Skyjump",
                 x=0.3,
                 y=0.1,
                 width=0.4,

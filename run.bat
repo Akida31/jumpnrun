@@ -1,1 +1,1 @@
-python -m jumpnrun
+python -m skyjump

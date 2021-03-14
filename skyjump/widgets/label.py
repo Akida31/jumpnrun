@@ -2,9 +2,9 @@ from typing import Optional
 from os import path
 import pygame
 
-from jumpnrun.widgets import XAlign, YAlign
-from jumpnrun.colors import WHITE
-from jumpnrun.config import DATA_DIR
+from skyjump.widgets import XAlign, YAlign
+from skyjump.colors import WHITE
+from skyjump.config import DATA_DIR
 
 
 class Label:

@@ -2,9 +2,9 @@ from typing import Dict, List
 
 import pygame
 
-from jumpnrun.map import Map
-from jumpnrun.utils import TILESIZE, load_spritesheet
-from jumpnrun.sound import play_sound
+from skyjump.map import Map
+from skyjump.utils import TILESIZE, load_spritesheet
+from skyjump.sound import play_sound
 
 MOVESPEED: float = 2
 

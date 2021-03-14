@@ -1,9 +1,9 @@
 import pygame
 
-from jumpnrun.utils import LevelStatus
-from jumpnrun.translate import t
-from jumpnrun.widgets import Button
-from jumpnrun.screens import Screen
+from skyjump.utils import LevelStatus
+from skyjump.translate import t
+from skyjump.widgets import Button
+from skyjump.screens import Screen
 
 
 class PauseScreen(Screen):

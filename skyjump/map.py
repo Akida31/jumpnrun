@@ -3,7 +3,7 @@ from typing import Tuple, List
 import pygame
 from pytmx.util_pygame import load_pygame
 
-from jumpnrun.objects import Sign, Spike, Star
+from skyjump.objects import Sign, Spike, Star
 
 
 class Tile(pygame.sprite.Sprite):

@@ -5,7 +5,7 @@ DATA_DIR: str = path.normpath(
     path.join(path.dirname(__file__), "..", "assets")
 )
 
-from jumpnrun import translate
+from skyjump import translate
 
 # the language of the game
 LANGUAGE: translate.Language = translate.Language.DE

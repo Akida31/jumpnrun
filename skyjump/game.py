@@ -1,9 +1,9 @@
 import pygame
 from os import path
 
-from jumpnrun.config import LANGUAGE, DATA_DIR
-from jumpnrun.screens.main import MainScreen
-from jumpnrun.translate import t
+from skyjump.config import LANGUAGE, DATA_DIR
+from skyjump.screens.main import MainScreen
+from skyjump.translate import t
 
 # FPS dont have to be so high for an UI
 # higher FPS increased the CPU usage massively
@@ -18,7 +18,7 @@ class Game:
         # initialize pygame
         pygame.init()
         # set the title of the window
-        pygame.display.set_caption("Jumpnrun")
+        pygame.display.set_caption("Skyjump")
         # set the icon of the window
         icon = pygame.image.load(path.join(DATA_DIR, "img", "icon.png"))
         pygame.display.set_icon(icon)

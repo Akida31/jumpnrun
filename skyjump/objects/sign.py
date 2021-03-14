@@ -1,6 +1,6 @@
 import pygame
 
-from jumpnrun.utils import TILESIZE
+from skyjump.utils import TILESIZE
 
 
 class Sign(pygame.sprite.Sprite):

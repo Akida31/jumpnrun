@@ -4,14 +4,14 @@ from typing import List, Optional
 
 import pygame
 
-from jumpnrun.config import DATA_DIR, LEVEL_FILE, MUSIC_VOLUME, MUTED
-from jumpnrun.level import Level, LevelData
-from jumpnrun.screens import Screen
-from jumpnrun.screens.end import EndScreen
-from jumpnrun.translate import t
-from jumpnrun.utils import LevelStatus
-from jumpnrun.widgets import Button, Label
-from jumpnrun.colors import GREY
+from skyjump.config import DATA_DIR, LEVEL_FILE, MUSIC_VOLUME, MUTED
+from skyjump.level import Level, LevelData
+from skyjump.screens import Screen
+from skyjump.screens.end import EndScreen
+from skyjump.translate import t
+from skyjump.utils import LevelStatus
+from skyjump.widgets import Button, Label
+from skyjump.colors import GREY
 
 
 class LevelScreen(Screen):

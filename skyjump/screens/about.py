@@ -1,8 +1,8 @@
 import pygame
 
-from jumpnrun.translate import t
-from jumpnrun.widgets import Button, Label, YAlign
-from jumpnrun.screens import Screen
+from skyjump.translate import t
+from skyjump.widgets import Button, Label, YAlign
+from skyjump.screens import Screen
 
 
 class AboutScreen(Screen):
