@@ -4,11 +4,11 @@ from typing import Dict, List, Tuple
 
 import pygame
 
-from skyjump.characters.player import Player
 from skyjump.colors import BLACK
 from skyjump.config import DATA_DIR
 from skyjump.map import Map
 from skyjump.objects import Sign, Spike, Star
+from skyjump.objects.player import Player
 from skyjump.screens.pause import PauseScreen
 from skyjump.sound import play_sound
 from skyjump.translate import t

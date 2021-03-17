@@ -10,14 +10,24 @@ FPS: int = 30
 
 
 class Screen:
+    """base class for all screens.
+    keeps track of the content of the screen and also renders it
+    You must call `super().__init__` in your __init__ method first in all your inherited classes
+    """
     def __init__(
         self, surface: pygame.Surface, background_image: bool = False
     ):
+        """create a screen and initialize it
+
+        :param surface: the surface to which the screen should be rendered
+        :param background_image: if there should be a background image or transparent background
+        """
         self.surface = surface
         self.labels: List[Label] = []
         self.buttons: Dict[Button, Callable] = {}
         self.clock = pygame.time.Clock()
         self.running = True
+        # initially there is no background image
         self.image: Optional[pygame.Surface] = None
         if background_image:
             self.image = pygame.image.load(
@@ -25,30 +35,32 @@ class Screen:
             )
 
     def add_label(self, label: Label):
-        """
-        add a widget to the screen
+        """add a widget to the screen
+
+        :param label: the label which should be added
         """
         self.labels.append(label)
 
     def add_button(self, button: Button, handler: Callable):
-        """
-        add a button to the screen
+        """add a button to the screen
 
-        the handler function will be called if the button is pressed
+        :param button: the button which should be added
+        :param handler: function which will be called if the button is pressed
         """
         self.buttons[button] = handler
 
     def render(self):
-        """
-        render all widgets to the surface
+        """render all widgets to the surface
         """
         # render the background image
         if self.image:
             width = self.surface.get_width()
             height = self.surface.get_height()
+            # scale the background image to full screen
             self.surface.blit(
                 pygame.transform.scale(self.image, (width, height)), (0, 0)
             )
+        # render all child widgets
         for label in self.labels:
             label.render(self.surface)
         for button in self.buttons:
@@ -57,8 +69,7 @@ class Screen:
         pygame.display.flip()
 
     def run(self):
-        """
-        run the main loop of the screen
+        """run the main loop of the screen
         """
         while self.running:
             for event in pygame.event.get():
@@ -71,4 +82,5 @@ class Screen:
                         if button.check_on(self.surface):
                             handler()
             self.render()
+            # delay the event loop to save CPU
             self.clock.tick(FPS)

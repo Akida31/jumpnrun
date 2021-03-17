@@ -76,7 +76,7 @@ class EndScreen(Screen):
         )
         self.status: bool = False
 
-    def run(self):
+    def run(self) -> bool:
         """
         run the screen
 

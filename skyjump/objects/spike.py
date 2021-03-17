@@ -2,7 +2,7 @@ import pygame
 
 
 class Spike(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, width: int, height: int, image):
+    def __init__(self, x: int, y: int, width: int, height: int, image: pygame.Surface):
         # init the Sprite class
         super().__init__()
         self.x = x

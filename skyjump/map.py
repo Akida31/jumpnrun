@@ -1,8 +1,7 @@
 from typing import Tuple, List
 
 import pygame
-from pytmx.util_pygame import load_pygame
-
+import pytmx
 from skyjump.objects import Sign, Spike, Star
 
 
@@ -30,7 +29,7 @@ class Map:
         :param path: the path of the tmx file to load from
         """
         # load the map from the given TiledMap-File
-        self.tmx = load_pygame(path, pixelalpha=True)
+        self.tmx: pytmx.TiledMap = pytmx.load_pygame(path, pixelalpha=True)
         # save the size of the map
         self.size: Tuple[int, int] = (
             self.tmx.width * self.tmx.tilewidth,
@@ -101,7 +100,7 @@ class Map:
             x = sign.x // self.tmx.tilewidth
             y = sign.y // self.tmx.tileheight
             description: str = sign.properties["description"]
-        signs.append(Sign(x, y, description, sign.image))
+            signs.append(Sign(x, y, description, sign.image))
         return signs
 
     def get_spikes(self) -> List[Spike]:

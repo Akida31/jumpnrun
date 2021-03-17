@@ -4,7 +4,7 @@ from skyjump.utils import TILESIZE
 
 
 class Sign(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, description: str, image):
+    def __init__(self, x: int, y: int, description: str, image: pygame.Surface):
         # init the Sprite class
         super().__init__()
         # compute the real x and y position

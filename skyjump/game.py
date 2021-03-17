@@ -6,14 +6,15 @@ from skyjump.screens.main import MainScreen
 from skyjump.translate import t
 
 # FPS dont have to be so high for an UI
-# higher FPS increased the CPU usage massively
+# and higher FPS increased the CPU usage massively
 FPS: int = 30
 
 
 class Game:
+    """base class for the skyjump game
+    """
     def __init__(self):
-        """
-        initialize the game
+        """initialize the game
         """
         # initialize pygame
         pygame.init()
@@ -22,6 +23,7 @@ class Game:
         # set the icon of the window
         icon = pygame.image.load(path.join(DATA_DIR, "img", "icon.png"))
         pygame.display.set_icon(icon)
+        # the initial size of the window
         self.width: int = 1200
         self.height: int = 600
         # flags for the window
@@ -33,11 +35,11 @@ class Game:
         )
         # set language
         t.change_language(LANGUAGE)
-        # set the framerate of the game
+        # create a clock to slow down the frames to the FPS
+        # because it uses less CPU
         self.clock = pygame.time.Clock()
 
     def run(self):
-        """
-        run the game
+        """run the game
         """
         MainScreen(self.surface).run()
