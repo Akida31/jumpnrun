@@ -1,6 +1,7 @@
 """
 configuration file for the game
-feel free to edit it, it is currently the only possibility to change the settings of the game
+feel free to edit it, it is currently the only possibility
+to change the settings of the game
 """
 
 from os import path

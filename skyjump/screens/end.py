@@ -9,6 +9,8 @@ from skyjump.level import LevelData
 
 
 class EndScreen(Screen):
+    """the screen after a level ended"""
+
     def __init__(
         self,
         surface: pygame.Surface,
@@ -17,14 +19,17 @@ class EndScreen(Screen):
         levels: List[LevelData],
         highscore: Optional[float],
     ):
-        """
-        the screen after a level ended
+        """create an end screen
 
-        level: number of the completed level
-        time: time in which the level is completed
-        highscore: time of the highscore if the current time is higher or None
+        :param surface: the surface to which the screen should be rendered
+        :param level: number of the completed level
+        :param time: time in which the level is completed
+        :param highscore: time of the highscore if the current time
+            is higher or None
         """
         super().__init__(surface, background_image=True)
+        # we have to use this weird caption to be able to
+        # insert the time and level number in the translation
         self.add_label(
             Label(
                 caption=f"{t('Completed Level #x in #ts')}".replace(
@@ -77,17 +82,18 @@ class EndScreen(Screen):
         self.status: bool = False
 
     def run(self) -> bool:
-        """
-        run the screen
+        """run the screen
 
-        returns if the next level should be started
+        :returns: if the next level should be started
         """
         super().run()
         return self.status
 
     def next_handler(self):
+        """go to the next level"""
         self.status = True
         self.running = False
 
     def back_handler(self):
+        """return to the main screen"""
         self.running = False

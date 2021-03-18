@@ -12,8 +12,8 @@ from skyjump.screens.level import LevelScreen
 
 
 class MainScreen(Screen):
-    """the main (or title) screen of the game
-    """
+    """the main (or title) screen of the game"""
+
     def __init__(self, surface: pygame.Surface):
         """create the main screen with all of its widgets
 
@@ -72,11 +72,9 @@ class MainScreen(Screen):
             pygame.mixer.music.play(loops=-1, fade_ms=500)
 
     def start_handler(self):
-        """start the game by going to the level screen
-        """
+        """start the game by going to the level screen"""
         LevelScreen(self.surface).run()
 
     def about_handler(self):
-        """go to the about screen
-        """
+        """go to the about screen"""
         AboutScreen(self.surface).run()

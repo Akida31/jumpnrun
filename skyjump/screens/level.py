@@ -16,7 +16,16 @@ from skyjump.widgets import Button, Label
 
 
 class LevelScreen(Screen):
+    """the screen showing all levels
+
+    the player can choose a level from all unlocked
+    """
+
     def __init__(self, surface: pygame.Surface):
+        """create a level screen
+
+        :param surface: the surface to which the screen should be rendered
+        """
         super().__init__(surface, background_image=True)
         # load all the levels of the levels file
         self.levels: List[LevelData] = []
@@ -26,15 +35,17 @@ class LevelScreen(Screen):
         for i, level in enumerate(self.levels):
             # draw label instead of button for unlocked levels
             caption = f"{t('Level')} {level.name}"
+            # show 4 levels in a row
             x = (i % 4) * 0.2 + 0.1
             y = (i // 4) * 0.2 + 0.2
+            # if the level is unlocked there will be only a non-clickable label
             if not level.unlocked:
                 self.add_label(Label(caption=caption, x=x, y=y, bg_color=GREY))
             else:
                 # because of pythons internal logic two lambdas
                 # are the only way to generate the click_handler dynamically
                 click_handler = (
-                    lambda x: (lambda: self.level_start_handler(x))
+                    lambda z: (lambda: self.level_start_handler(z))
                 )(i)
                 self.add_button(
                     Button(caption=caption, x=x, y=y),
@@ -51,9 +62,14 @@ class LevelScreen(Screen):
         )
 
     def back_handler(self):
+        """return to the main screen"""
         self.running = False
 
     def level_start_handler(self, level_nr: int):
+        """start the chosen level
+
+        :param level_nr: the number of the chosen level
+        """
         if not MUTED:
             music_dir = path.join(DATA_DIR, "music")
             # get path of all music files
@@ -87,6 +103,7 @@ class LevelScreen(Screen):
                 # save the changes
                 with open(LEVEL_FILE, "w") as f:
                     json.dump(self.levels, f, default=vars)
+                # show the end screen
                 start = EndScreen(
                     self.surface, level_nr, time, self.levels, highscore
                 ).run()
@@ -95,4 +112,5 @@ class LevelScreen(Screen):
                 pass
             elif status == LevelStatus.Quit:
                 start = False
+        # if the level was quit, return to the mainscreen
         self.back_handler()

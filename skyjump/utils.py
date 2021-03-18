@@ -12,17 +12,20 @@ FPS: int = 60
 
 
 class LevelStatus(Enum):
-    Paused = (0,)
-    Running = (1,)
-    Finished = (2,)
-    Quit = (3,)
+    """status of the level
+
+    also used to return the status with which the level ended
+    """
+
+    Paused = 0
+    Running = 1
+    Finished = 2
+    Quit = 3
     Restart = 4
 
 
 def quit_game():
-    """
-    quit the game
-    """
+    """quit the game"""
     pygame.quit()
     sys.exit()
 
@@ -36,28 +39,32 @@ def load_spritesheet(
     spacing_x: int = 0,
     spacing_y: int = 0,
 ) -> List[List[pygame.Surface]]:
-    """
-    load a spritesheet from a given file
+    """load a spritesheet from a given file
 
-    filename: the file from which the spritesheet should be loaded
-    tile_width: the width of a single tile in the sheet
-    tile_height: the height of a single tile in the sheet,
+    :param filename: the file from which the spritesheet should be loaded
+    :param tile_width: the width of a single tile in the sheet
+    :param tile_height: the height of a single tile in the sheet,
                  if not given the tile_width will be used
-    offset_x/ offset_y: the offset of the sprite in the top left corner in px
-    spacing_x/ spacing_y: the spacing between the sprites
-    alphacolor: the background alpha color
+    :param offset_x: the x offset of the sprite in the top left corner in px
+    :param offset_y: the y offset of the sprite in the top left corner in px
+    :param spacing_x: the x spacing between the sprites
+    :param spacing_y: the y spacing between the sprites
+
+    :returns: rows of columns of sprite images
     """
+    # set tile height for quadratic sprites
     if tile_height is None:
         tile_height = tile_width
     image = pygame.image.load(filename).convert()
     width, height = image.get_size()
+    # calculate the number of tiles in each direction
     tiles_x = (width - offset_x + spacing_x) // (tile_width + spacing_x)
     tiles_y = (height - offset_y + spacing_y) // (tile_height + spacing_y)
     sheet = []
     for x in range(tiles_x):
         line = []
         for y in range(tiles_y):
-            # x1, y1 -> upper left corner
+            # x1, y1 -> upper left corner of the tile
             x1 = offset_x + x * (tile_width + spacing_x)
             y1 = offset_y + y * (tile_height + spacing_y)
             rect = (x1, y1, tile_width, tile_height)

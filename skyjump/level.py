@@ -7,7 +7,7 @@ import pygame
 from skyjump.colors import BLACK
 from skyjump.config import DATA_DIR
 from skyjump.map import Map
-from skyjump.objects import Sign, Spike, Star
+from skyjump.objects import Star
 from skyjump.objects.player import Player
 from skyjump.screens.pause import PauseScreen
 from skyjump.sound import play_sound
@@ -17,25 +17,23 @@ from skyjump.widgets import Label, XAlign, YAlign
 
 
 class LevelData:
-    """a deserializer for the levels saved in the level file
-    """
+    """a deserializer for the levels saved in the level file"""
 
     name: str  # the name of the level
     filename: str  # the file from which the level should be loaded
     highscore: float  # the current highscore of the level
-    unlocked: bool  # if the level is currently unlocked (the level before was completed)
+    # if the level is currently unlocked (the level before was completed)
+    unlocked: bool
 
     def __init__(self, data: Dict):
-        """create leveldata from the given json
-        """
+        """create leveldata from the given json"""
         self.name = data["name"]
         self.filename = data["filename"]
         self.highscore = data["highscore"]
         self.unlocked = data["unlocked"]
 
     def to_json(self) -> str:
-        """create the json string from the leveldata
-        """
+        """create the json string from the leveldata"""
         # self.__dict__ is a dictionary of all attributes of the class
         return json.dumps(self.__dict__)
 
@@ -44,12 +42,15 @@ class Level:
     def __init__(self, level_data: LevelData, surface: pygame.Surface):
         """initialize the level
 
-        :param level_data: the data of the level containing the necessary information like highscore
+        :param level_data: the data of the level containing
+            the necessary information like highscore
         :param surface: the surface to which the level should be rendered
         """
         # if the level is not unlocked there is probably some cheating going on
         if not level_data.unlocked:
-            print(f"ERROR, Level {level_data.name} was not unlocked but started")
+            print(
+                f"ERROR, Level {level_data.name} was not unlocked but started"
+            )
             quit_game()
         # save the surface
         self.surface = surface
@@ -101,19 +102,19 @@ class Level:
             path.join(DATA_DIR, "img", "characters2.png"), player_x, player_y
         )
 
-        self.objects: Dict[str, List] = {}
+        self.objects: Dict[str, pygame.sprite.Group] = {}
         # load the position of the stars
-        stars: List[Star] = self.map.get_stars()
+        stars: pygame.sprite.Group = self.map.get_stars()
         self.objects["stars"] = stars
         # load the star hints
         self.star_hints: List[Star] = []
         for i in range(len(self.objects["stars"])):
             self.star_hints.append(Star(1 + i, 2))
         # load all signs
-        signs: List[Sign] = self.map.get_signs()
+        signs: pygame.sprite.Group = self.map.get_signs()
         self.objects["signs"] = signs
         # load all spikes
-        spikes: List[Spike] = self.map.get_spikes()
+        spikes: pygame.sprite.Group = self.map.get_spikes()
         self.objects["spikes"] = spikes
         # the level is initially running
         self.status: LevelStatus = LevelStatus.Running
@@ -154,13 +155,11 @@ class Level:
         return self.status, self.get_time()
 
     def get_time(self) -> float:
-        """get the time in seconds
-        """
+        """get the time in seconds"""
         return round(self.timer / 1000, 2)
 
     def on_events(self):
-        """handle all events of the game
-        """
+        """handle all events of the game"""
         for event in pygame.event.get():
             # close the program if the window should be closed
             if event.type == pygame.QUIT:
@@ -179,8 +178,7 @@ class Level:
         self.width, self.height = size
 
     def render(self):
-        """render the window and all of its content
-        """
+        """render the window and all of its content"""
         map_width, map_height = self.map.get_size()
         # create temporary surface for transforming with transparent background
         surface = pygame.Surface((map_width, map_height), pygame.SRCALPHA)
@@ -206,7 +204,7 @@ class Level:
         )
         # render the description of a sign if a player stands on one
         if collision := pygame.sprite.spritecollideany(
-                self.player, self.objects["signs"]
+            self.player, self.objects["signs"]
         ):
             self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)
@@ -218,8 +216,7 @@ class Level:
         pygame.display.flip()
 
     def apply_physics(self):
-        """apply physics to all objects
-        """
+        """apply physics to all objects"""
         for group in self.objects:
             for element in self.objects[group]:
                 element.apply_physics(self.map)
@@ -228,7 +225,8 @@ class Level:
     def handle_keypresses(self, keys: List[bool]):
         """handle the keypresses of the user
 
-        :param keys: the list of keypresses determined by `pygame.key.get_pressed()`
+        :param keys: the list of keypresses determined by
+            `pygame.key.get_pressed()`
         """
         if keys[pygame.K_ESCAPE]:
             self.status = PauseScreen(self.surface).run()

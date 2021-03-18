@@ -11,11 +11,10 @@ FPS: int = 30
 
 
 class Game:
-    """base class for the skyjump game
-    """
+    """base class for the skyjump game"""
+
     def __init__(self):
-        """initialize the game
-        """
+        """initialize the game"""
         # initialize pygame
         pygame.init()
         # set the title of the window
@@ -40,6 +39,5 @@ class Game:
         self.clock = pygame.time.Clock()
 
     def run(self):
-        """run the game
-        """
+        """run the game"""
         MainScreen(self.surface).run()

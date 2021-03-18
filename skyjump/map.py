@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple
 
 import pygame
 import pytmx
@@ -6,8 +6,7 @@ from skyjump.objects import Sign, Spike, Star
 
 
 class Tile(pygame.sprite.Sprite):
-    """basic class for all collidable Tiles
-    """
+    """basic class for all collidable Tiles"""
 
     def __init__(self, x: int, y: int, width: int, height: int):
         """create a new tile
@@ -24,15 +23,15 @@ class Tile(pygame.sprite.Sprite):
 
     @property
     def rect(self) -> pygame.Rect:
-        """ needed for collision
+        """needed for collision
         :returns: the rect of the tile
         """
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
 
 class Map:
-    """the map of each level
-    """
+    """the map of each level"""
+
     def __init__(self, path: str):
         """create a new map
 
@@ -83,7 +82,7 @@ class Map:
         y: int = player.y // self.tmx.tileheight
         return x, y
 
-    def get_stars(self) -> List[Star]:
+    def get_stars(self) -> pygame.sprite.Group:
         """get all stars
 
         :returns: the stars in the level
@@ -92,43 +91,43 @@ class Map:
         layer = self.tmx.get_layer_by_name("Stars")
         # create an empty list for all stars
         # every star is just a tuple of x and y position
-        stars: List[Star] = []
+        stars = pygame.sprite.Group()
         # calculate the tileposition of the stars
         for star in layer:
             x = star.x // self.tmx.tilewidth
             y = star.y // self.tmx.tileheight
-            stars.append(Star(x, y))
+            stars.add(Star(x, y))
         return stars
 
-    def get_signs(self) -> List[Sign]:
+    def get_signs(self) -> pygame.sprite.Group:
         """get all signs
 
-        similar to `get_stars`
+        :returns: the signs in the level
         """
         # load the sign layer
         layer = self.tmx.get_layer_by_name("Signs")
-        signs: List[Sign] = []
+        signs = pygame.sprite.Group()
         for sign in layer:
             x = sign.x // self.tmx.tilewidth
             y = sign.y // self.tmx.tileheight
             description: str = sign.properties["description"]
-            signs.append(Sign(x, y, description, sign.image))
+            signs.add(Sign(x, y, description, sign.image))
         return signs
 
-    def get_spikes(self) -> List[Spike]:
+    def get_spikes(self) -> pygame.sprite.Group:
         """get all spikes
 
-        similar to `get_stars`
+        :returns: the spikes in the level
         """
         # load the spike layer
         layer = self.tmx.get_layer_by_name("Spikes")
-        spikes: List[Spike] = []
+        spikes = pygame.sprite.Group()
         for spike in layer:
             x = spike.x
             y = spike.y
             width = int(spike.width)
             height = int(spike.height)
-            spikes.append(Spike(x, y, width, height, spike.image))
+            spikes.add(Spike(x, y, width, height, spike.image))
         return spikes
 
     def render(self, surface: pygame.Surface):

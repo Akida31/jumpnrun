@@ -7,12 +7,15 @@ from skyjump.screens import Screen
 
 
 class PauseScreen(Screen):
-    """
-    pause screen in the level
-    """
+    """pause screen in the level"""
 
     def __init__(self, surface: pygame.Surface):
+        """create a pause screen
+
+        :param surface: the surface to which the screen should be rendered
+        """
         super().__init__(surface, background_image=True)
+        # status is representing the status of the level, not of the screen
         self.status = LevelStatus.Paused
         self.add_button(
             Button(
@@ -43,23 +46,33 @@ class PauseScreen(Screen):
         )
 
     def set_status(self, status: LevelStatus):
-        """
-        set the levelstatus
+        """set the levelstatus
+
+        :param status: the new status of the level
         """
         self.status = status
+        # keep running if the level status is paused
         self.running = status == LevelStatus.Paused
 
     def run(self) -> LevelStatus:
+        """run the screen
+
+        wrapper for the superclass
+        :returns: the status of the level
+        """
         super().run()
         return self.status
 
     def continue_handler(self):
+        """continue the level after a short time"""
         self.set_status(LevelStatus.Running)
         # give the player some time to react
         pygame.time.wait(500)
 
     def restart_handler(self):
+        """restart the current level"""
         self.set_status(LevelStatus.Restart)
 
     def quit_handler(self):
+        """quit the current level and go to the main screen"""
         self.set_status(LevelStatus.Quit)

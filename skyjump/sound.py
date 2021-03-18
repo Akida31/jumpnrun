@@ -6,9 +6,12 @@ from threading import Thread
 
 
 def play_sound(sound_file: str, pause: bool = False):
+    """play the sound file if the volume is on
+
+    :param sound_file: the file of the sound
+    :param pause: if the music should be paused
     """
-    play the sound file if the volume is on
-    """
+    # if muted, do nothing
     if MUTED:
         return
     if pause:
@@ -24,7 +27,11 @@ def play_sound(sound_file: str, pause: bool = False):
 
 
 def _unpause_music(waiting_time: float):
+    """unpauser of the music after sound has ended
+    :param waiting_time: the time to wait before unpausing
+    """
     time.sleep(waiting_time)
     # unpause the music if it isn't playing
+    # without the check the program will quit sometimes after delay
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.unpause()

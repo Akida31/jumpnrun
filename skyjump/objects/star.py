@@ -11,7 +11,17 @@ WAITING_TIME: int = 7
 
 
 class Star(pygame.sprite.Sprite):
+    """stars which should be collected in the game
+
+    is currently a coin and not a star
+    """
+
     def __init__(self, x: int, y: int):
+        """create a new star
+
+        :param x: the x-position in tiles
+        :param y: the y-position in tiles
+        """
         # init the Sprite class
         super().__init__()
         # compute the real x and y position
@@ -31,14 +41,16 @@ class Star(pygame.sprite.Sprite):
 
     @property
     def rect(self) -> pygame.Rect:
-        """
-        getter for rect, is used internally by collision detection from pygame
+        """getter for rect
+
+        is used internally by collision detection from pygame
         """
         return pygame.Rect(self.x, self.y, TILESIZE, TILESIZE)
 
     def render(self, surface: pygame.Surface):
-        """
-        render the current star image to the given surface
+        """render the star
+
+        :param surface: surface on which the sign should be rendered
         """
         # get the current image
         image = self.images[self.iter_state // WAITING_TIME]
@@ -51,17 +63,17 @@ class Star(pygame.sprite.Sprite):
         surface.blit(image, self.rect)
 
     def apply_physics(self, *_):
-        """
-        stars dont have physics, so do nothing
+        """stars dont have physics, so do nothing
 
-        take any arguments given so this won't create effort later
+        :params: take any arguments given so this won't create effort later
         """
         pass
 
 
 def load_starfiles() -> List[str]:
-    """
-    load all the files of the star
+    """load all the files of the star
+
+    :returns: all file paths
     """
     # load the imgs for the stars
     star_dir: str = path.join(DATA_DIR, "img", "star", "shine")
