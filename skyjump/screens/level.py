@@ -1,9 +1,11 @@
 import json
 from os import listdir, path
+from random import shuffle
 from typing import List, Optional
 
 import pygame
 
+from skyjump.colors import GREY
 from skyjump.config import DATA_DIR, LEVEL_FILE, MUSIC_VOLUME, MUTED
 from skyjump.level import Level, LevelData
 from skyjump.screens import Screen
@@ -11,7 +13,6 @@ from skyjump.screens.end import EndScreen
 from skyjump.translate import t
 from skyjump.utils import LevelStatus
 from skyjump.widgets import Button, Label
-from skyjump.colors import GREY
 
 
 class LevelScreen(Screen):
@@ -59,6 +60,8 @@ class LevelScreen(Screen):
             musics = list(
                 map(lambda x: path.join(music_dir, x), listdir(music_dir))
             )
+            # shuffle the music
+            shuffle(musics)
             # play the first music file
             pygame.mixer.music.load(musics[0])
             # queue all other music files
