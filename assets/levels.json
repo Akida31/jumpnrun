@@ -1,32 +1,62 @@
 [
-    {
-        "name": "1",
-        "filename": "0.tmx",
-        "highscore": 0.0,
-        "unlocked": true
-    },
-    {
-        "name": "2",
-        "filename": "1.tmx",
-        "highscore": 0.0,
-        "unlocked": false
-    },
-    {
-        "name": "3",
-        "filename": "2.tmx",
-        "highscore": 0.0,
-        "unlocked": false
-    },
-    {
-        "name": "4",
-        "filename": "3.tmx",
-        "highscore": 0.0,
-        "unlocked": false
-    },
-    {
-        "name": "Test",
-        "filename": "test.tmx",
-        "highscore": 0.0,
-        "unlocked": false
-    }
+  {
+    "name": "1",
+    "filename": "0.tmx",
+    "highscore": 0.0,
+    "unlocked": true
+  },
+  {
+    "name": "2",
+    "filename": "1.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "3",
+    "filename": "2.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "4",
+    "filename": "3.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "5",
+    "filename": "4.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "6",
+    "filename": "5.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "7",
+    "filename": "6.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "8",
+    "filename": "7.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "9",
+    "filename": "8.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  },
+  {
+    "name": "10",
+    "filename": "9.tmx",
+    "highscore": 0.0,
+    "unlocked": false
+  }
 ]

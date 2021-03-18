@@ -131,7 +131,7 @@ class Player(pygame.sprite.Sprite):
     def jump(self, map: Map):
         """the player jumps if nothing is above him"""
         if self._check_down(map):
-            self.velocity[1] -= 9
+            self.velocity[1] -= 11
 
     def go_left(self, _: Map):
         """the player goes left"""
@@ -144,6 +144,7 @@ class Player(pygame.sprite.Sprite):
     def move_up(self, map: Map, dy: float):
         """move the player directly up if nothing is in his way
 
+        :param map: the map on which the player moves
         :param dy: the distance to move
         """
         if not self._check_up(map):
@@ -152,6 +153,7 @@ class Player(pygame.sprite.Sprite):
     def move_down(self, map: Map, dy: float):
         """move the player directly down if nothing is in his way
 
+        :param map: the map on which the player moves
         :param dy: the distance to move
         """
         if not self._check_down(map):
@@ -160,6 +162,7 @@ class Player(pygame.sprite.Sprite):
     def move_left(self, map: Map, dx: float):
         """move the player directly left if nothing is in his way
 
+        :param map: the map on which the player moves
         :param dx: the distance to move
         """
         if not self._check_left(map):
@@ -168,6 +171,7 @@ class Player(pygame.sprite.Sprite):
     def move_right(self, map: Map, dx: float):
         """move the player directly right if nothing is in his way
 
+        :param map: the map on which the player moves
         :param dx: the distance to move
         """
         if not self._check_right(map):

@@ -100,9 +100,9 @@ class LevelScreen(Screen):
                 # unlock the next level
                 if level_nr < len(self.levels) - 1:
                     self.levels[level_nr + 1].unlocked = True
-                # save the changes
+                # save the changes formatted nicely
                 with open(LEVEL_FILE, "w") as f:
-                    json.dump(self.levels, f, default=vars)
+                    json.dump(self.levels, f, default=vars, indent=2)
                 # show the end screen
                 start = EndScreen(
                     self.surface, level_nr, time, self.levels, highscore
