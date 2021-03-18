@@ -6,11 +6,16 @@ from skyjump.objects import Sign, Spike, Star
 
 
 class Tile(pygame.sprite.Sprite):
-    """
-    basic class for all collidable Tiles
+    """basic class for all collidable Tiles
     """
 
     def __init__(self, x: int, y: int, width: int, height: int):
+        """create a new tile
+
+        :param x, y: the position of the tile
+        :param width, height: the dimensions of the tile
+        """
+        # initialize the sprite class
         super().__init__()
         self.x = x
         self.y = y
@@ -19,13 +24,18 @@ class Tile(pygame.sprite.Sprite):
 
     @property
     def rect(self) -> pygame.Rect:
+        """ needed for collision
+        :returns: the rect of the tile
+        """
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
 
 class Map:
+    """the map of each level
+    """
     def __init__(self, path: str):
-        """
-        create a new map
+        """create a new map
+
         :param path: the path of the tmx file to load from
         """
         # load the map from the given TiledMap-File
@@ -37,9 +47,11 @@ class Map:
         )
         # create a group for map colliders
         self.colliders: pygame.sprite.Group = pygame.sprite.Group()
+        # add only the content of the visible layers
         for layer_nr in self.tmx.visible_tile_layers:
             # if not loaded like this, also object layers will be here
             layer = self.tmx.layers[layer_nr]
+            # ignore the image of the tile
             for x, y, _ in layer.tiles():
                 # check each tile of the map if it is a collider
                 properties = self.tmx.get_tile_properties(x, y, layer_nr)
@@ -53,18 +65,16 @@ class Map:
                     self.colliders.add(sprite)
 
     def get_size(self) -> Tuple[int, int]:
-        """
-        get the size of the map
+        """get the size of the map
 
-        returns width, height
+        :returns: width, height
         """
         return self.size
 
     def get_player_position(self) -> Tuple[int, int]:
-        """
-        get the initial position of the player
+        """get the initial position of the player
 
-        returns (x, y)
+        :returns: x, y
         """
         # get the player object from the TiledMapData
         player = self.tmx.get_object_by_name("player")
@@ -74,8 +84,9 @@ class Map:
         return x, y
 
     def get_stars(self) -> List[Star]:
-        """
-        get all stars
+        """get all stars
+
+        :returns: the stars in the level
         """
         # load the star layer
         layer = self.tmx.get_layer_by_name("Stars")
@@ -90,8 +101,9 @@ class Map:
         return stars
 
     def get_signs(self) -> List[Sign]:
-        """
-        get all signs
+        """get all signs
+
+        similar to `get_stars`
         """
         # load the sign layer
         layer = self.tmx.get_layer_by_name("Signs")
@@ -104,8 +116,9 @@ class Map:
         return signs
 
     def get_spikes(self) -> List[Spike]:
-        """
-        get all spikes
+        """get all spikes
+
+        similar to `get_stars`
         """
         # load the spike layer
         layer = self.tmx.get_layer_by_name("Spikes")
@@ -119,8 +132,9 @@ class Map:
         return spikes
 
     def render(self, surface: pygame.Surface):
-        """
-        render the map to the given surface
+        """render the map to the given surface
+
+        :param surface: the surface to which the map should be rendered
         """
         # fill background with a eventual background color
         if bg := self.tmx.background_color:

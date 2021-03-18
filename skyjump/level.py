@@ -17,39 +17,39 @@ from skyjump.widgets import Label, XAlign, YAlign
 
 
 class LevelData:
-    """
-    a deserializer for the levels saved in the level file
+    """a deserializer for the levels saved in the level file
     """
 
-    name: str
-    filename: str
-    highscore: float
-    unlocked: bool
+    name: str  # the name of the level
+    filename: str  # the file from which the level should be loaded
+    highscore: float  # the current highscore of the level
+    unlocked: bool  # if the level is currently unlocked (the level before was completed)
 
-    def __init__(self, json: Dict):
+    def __init__(self, data: Dict):
+        """create leveldata from the given json
         """
-        create a leveldata from the given json
-        """
-        self.name = json["name"]
-        self.filename = json["filename"]
-        self.highscore = json["highscore"]
-        self.unlocked = json["unlocked"]
+        self.name = data["name"]
+        self.filename = data["filename"]
+        self.highscore = data["highscore"]
+        self.unlocked = data["unlocked"]
 
     def to_json(self) -> str:
+        """create the json string from the leveldata
+        """
+        # self.__dict__ is a dictionary of all attributes of the class
         return json.dumps(self.__dict__)
 
 
 class Level:
     def __init__(self, level_data: LevelData, surface: pygame.Surface):
+        """initialize the level
+
+        :param level_data: the data of the level containing the necessary information like highscore
+        :param surface: the surface to which the level should be rendered
         """
-        initialize the level
-        """
-        # if the level is not unlocked
-        # there is probably some cheating going on
+        # if the level is not unlocked there is probably some cheating going on
         if not level_data.unlocked:
-            print(
-                f"ERROR, Level {level_data.name} was not unlocked but started"
-            )
+            print(f"ERROR, Level {level_data.name} was not unlocked but started")
             quit_game()
         # save the surface
         self.surface = surface
@@ -70,6 +70,7 @@ class Level:
         )
 
         # create a label for the description of signs
+        # on the start it has no caption but it will be set if necessary
         self.sign_label = Label(
             caption="",
             x=0.15,
@@ -82,12 +83,14 @@ class Level:
             yalign=YAlign.TOP,
         )
 
-        # create the background image
+        # load the background image
         self.background = pygame.image.load(
             path.join(DATA_DIR, "img", "backgrounds", "landscape.png")
         )
 
-        # set the framerate of the game
+        # create a clock for the level
+        # the clock will delay the time between the frames
+        # so that the CPU usage is limited
         self.clock = pygame.time.Clock()
         # load the map
         self.map = Map(path.join(DATA_DIR, "maps", self.level_data.filename))
@@ -112,14 +115,15 @@ class Level:
         # load all spikes
         spikes: List[Spike] = self.map.get_spikes()
         self.objects["spikes"] = spikes
-        self.status = LevelStatus.Running
+        # the level is initially running
+        self.status: LevelStatus = LevelStatus.Running
+        # the timer to show the playing time and determining the highscore
         self.timer: int = 0
 
     def run(self) -> Tuple[LevelStatus, float]:
-        """
-        gameloop, running the game
+        """gameloop, running the game
 
-        returns the status of the end and the time which the game ran
+        :returns: status of the end and the time which the game ran
         """
         # the time between frames is not everytime the same
         # so use the difference
@@ -143,20 +147,19 @@ class Level:
                 if len(self.objects["stars"]) == 0:
                     self.status = LevelStatus.Finished
             self.render()
+            # get the time difference since the last frame
             dt = self.clock.tick(FPS)
         if self.status == LevelStatus.Finished:
             play_sound("jingle_win.ogg", pause=True)
         return self.status, self.get_time()
 
     def get_time(self) -> float:
-        """
-        get the time in seconds
+        """get the time in seconds
         """
         return round(self.timer / 1000, 2)
 
     def on_events(self):
-        """
-        handle all events of the game
+        """handle all events of the game
         """
         for event in pygame.event.get():
             # close the program if the window should be closed
@@ -169,16 +172,14 @@ class Level:
         self.handle_keypresses(pygame.key.get_pressed())
 
     def resize(self, size: Tuple[int, int]):
-        """
-        resize the window and all content
+        """resize the window and all content on next render
 
-        size: (width, height)
+        :param size: (width, height)
         """
         self.width, self.height = size
 
     def render(self):
-        """
-        render the window and all of its content
+        """render the window and all of its content
         """
         map_width, map_height = self.map.get_size()
         # create temporary surface for transforming with transparent background
@@ -191,7 +192,7 @@ class Level:
                 element.render(surface)
         # render the player
         self.player.render(surface)
-        # render the background image
+        # render the background image to the full window
         self.surface.blit(
             pygame.transform.scale(self.background, (self.width, self.height)),
             (0, 0),
@@ -199,13 +200,13 @@ class Level:
         # render the hint stars
         for i in range(len(self.objects["stars"])):
             self.star_hints[i].render(surface)
-        # render the temporary surface to the full screen
+        # render the temporary surface scaled up to the full screen
         self.surface.blit(
             pygame.transform.scale(surface, (self.width, self.height)), (0, 0)
         )
         # render the description of a sign if a player stands on one
         if collision := pygame.sprite.spritecollideany(
-            self.player, self.objects["signs"]
+                self.player, self.objects["signs"]
         ):
             self.sign_label.set_caption(t(collision.description))
             self.sign_label.render(self.surface)
@@ -213,24 +214,22 @@ class Level:
         # render the timer
         self.time_label.set_caption(f"{t('Time')}: {self.get_time()}")
         self.time_label.render(self.surface)
+        # update the display
         pygame.display.flip()
 
     def apply_physics(self):
-        """
-        apply physics to all objects
+        """apply physics to all objects
         """
         for group in self.objects:
             for element in self.objects[group]:
                 element.apply_physics(self.map)
         self.player.apply_physics(self.map)
 
-    def handle_keypresses(self, keys):
+    def handle_keypresses(self, keys: List[bool]):
+        """handle the keypresses of the user
+
+        :param keys: the list of keypresses determined by `pygame.key.get_pressed()`
         """
-        handle the keypresses of the user
-        """
-        # quit on escape
-        if keys[pygame.K_q]:
-            quit_game()
         if keys[pygame.K_ESCAPE]:
             self.status = PauseScreen(self.surface).run()
         if keys[pygame.K_w]:
